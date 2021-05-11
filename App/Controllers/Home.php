@@ -3,18 +3,19 @@
 namespace App\Controllers;
 
 use \App\Core\Controller;
+use \App\Core\View;
 
-trigger_error("Home start", E_USER_WARNING);
 class Home extends Controller
 {
     function home()
     {
-        echo "Home";
+        View::view("Home");
     }
 
     function test($a)
     {
-        echo gettype($a);
+        View::view("Test", [
+            "testValue" => $a,
+        ]);
     }
 }
-trigger_error("Home end", E_USER_WARNING);
