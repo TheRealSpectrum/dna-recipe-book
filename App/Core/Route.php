@@ -47,7 +47,8 @@ class Route
                 continue;
             }
 
-            $result["callback"]($result["parameters"]);
+            $content = $result["callback"]($result["parameters"]);
+            echo $content;
 
             break;
         }

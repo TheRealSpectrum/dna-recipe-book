@@ -9,12 +9,12 @@ class Home extends Controller
 {
     function home()
     {
-        View::view("Home");
+        return View::view("Home");
     }
 
     function test($a)
     {
-        View::view("Test", [
+        return View::view("Test", [
             "testValue" => $a,
         ]);
     }

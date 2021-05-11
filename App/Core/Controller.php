@@ -23,7 +23,7 @@ class Controller
                 );
             }
 
-            call_user_func_array($reflection->getClosure($this), $arguments);
+            return call_user_func_array($reflection->getClosure($this), $arguments);
         };
     }
 }
