@@ -1,16 +1,11 @@
 <?php
 
-use \App\Route;
+use \App\Controllers\Home;
+use \App\Core\Route;
+
+$homeController = new Home();
 
 Route::list([
-    Route::post('recipes/:a', function ($parameters) {
-        echo $parameters["a"];
-    }),
-    Route::get('recipes/:a', function ($parameters) {
-?>
-    <form action="/recipes/<?= $parameters["a"] ?>" method="post">
-        <button type="submit">hey</button>
-    </form>
-<?php
-    }),
+    Route::get("/", $homeController->parse('home')),
+    Route::get("/test/:a", $homeController->parse('test')),
 ]);
