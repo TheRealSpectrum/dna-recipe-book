@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use \App\Route;
-
 function requireFiles(string $path)
 {
     $files = scandir($path);
@@ -23,14 +21,4 @@ function requireFiles(string $path)
 
 requireFiles("App");
 
-Route::list([
-    Route::get("/a/b", function () {
-        echo "ab";
-    }),
-    Route::get("/", function () {
-        echo "index";
-    }),
-    Route::get("/:a/:b", function ($parameters) {
-        echo $parameters["a"] . "<br>" . $parameters["b"];
-    }),
-]);
+include "Routes.php";

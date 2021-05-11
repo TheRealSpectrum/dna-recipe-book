@@ -11,6 +11,26 @@ class Route
         return Route::route("GET", $uri, $callback);
     }
 
+    public static function post(string $uri, $callback)
+    {
+        return Route::route("POST", $uri, $callback);
+    }
+
+    public static function put(string $uri, $callback)
+    {
+        return Route::route("PUT", $uri, $callback);
+    }
+
+    public static function patch(string $uri, $callback)
+    {
+        return Route::route("PATCH", $uri, $callback);
+    }
+
+    public static function delete(string $uri, $callback)
+    {
+        return Route::route("DELETE", $uri, $callback);
+    }
+
     public static function list(array $routes)
     {
         $requestUri = explode("/", $_SERVER['REQUEST_URI']);
