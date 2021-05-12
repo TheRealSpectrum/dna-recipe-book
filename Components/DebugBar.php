@@ -7,8 +7,9 @@ use App\Core\View;
 
 <div id="debug-bar" class="debug-bar">
     <div class="labels">
-        <div data-category="messages">Messages</div>
-        <div data-category="queries">Queries</div>
+        <div class="toggle-bar">close</div>
+        <div class="category" data-category="messages">Messages</div>
+        <div class="category" data-category="queries">Queries</div>
     </div>
     <div class="content">
         <div class="messages" data-category="messages">
@@ -40,6 +41,7 @@ use App\Core\View;
         border-top: 5px solid hsl(9, 98%, 43%);
         display: flex;
         flex-direction: column;
+        transition-duration: 200ms;
     }
 
     .debug-bar .labels {
@@ -55,6 +57,10 @@ use App\Core\View;
         cursor: pointer;
         color: hsl(180, 30%, 22%);
         font-weight: bold;
+        overflow-x: hidden;
+        transition-duration: 200ms;
+        width: 100px;
+        text-align: center;
     }
 
     .debug-bar .labels div:hover {
@@ -62,8 +68,18 @@ use App\Core\View;
     }
 
     .debug-bar .content {
-        overflow-y: scroll;
         flex-grow: 1;
+        display: flex;
+        flex-direction: row;
+        position: relative;
+        left: 0;
+        transition-duration: 200ms;
+    }
+
+    .debug-bar .content>div {
+        overflow-y: scroll;
+        width: 100vw;
+        flex-shrink: 0;
     }
 
     .debug-bar .content .messages {
@@ -99,21 +115,30 @@ use App\Core\View;
     const LABELS_ELEMENT = Array.from(DEBUG_BAR_ELEMENT.children).find((child) => child.classList.contains("labels"));
     const CONTENT_ELEMENT = Array.from(DEBUG_BAR_ELEMENT.children).find((child) => child.classList.contains("content"));
 
+    let i = 0;
     for (const child of LABELS_ELEMENT.children) {
-        const category = child.dataset.category;
-        child.addEventListener("click", () => {
-            for (const content of CONTENT_ELEMENT.children) {
-                if (category === content.dataset.category) {
-                    content.style.display = "block";
-                } else {
-                    content.style.display = "none";
+        if (child.classList.contains("toggle-bar")) {
+            let isOpen = true;
+            child.addEventListener("click", () => {
+                DEBUG_BAR_ELEMENT.style.height = isOpen ? "32px" : "200px";
+                child.textContent = isOpen ? "open" : "close";
+                for (const labelChild of LABELS_ELEMENT.children) {
+                    if (child === labelChild) {
+                        continue;
+                    }
+                    labelChild.style.padding = isOpen ? "0" : "5px";
+                    labelChild.style.width = isOpen ? "0" : "100px";
                 }
-            }
-        });
-    }
+                isOpen = !isOpen;
+            });
+            continue;
+        }
 
-    for (const content of CONTENT_ELEMENT.children) {
-        content.style.display = "none";
+        const category = child.dataset.category;
+        const offset = `-${i*100}vw`;
+        child.addEventListener("click", () => {
+            CONTENT_ELEMENT.style.left = offset;
+        });
+        ++i;
     }
-    CONTENT_ELEMENT.children[0].style.display = "block";
 </script>
