@@ -86,7 +86,6 @@ class DebugHandler
      */
     public function logMessage(string $level, string $message, ?string $file = null, ?int $line = null): void
     {
-        echo "lmao<br>";
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 1)[0];
         $actualFile = $file ?? $backtrace["file"];
         $actualLine = $line ?? $backtrace["line"];
@@ -97,8 +96,6 @@ class DebugHandler
             "line" => $actualLine
         ]);
 
-        $logFile = fopen($this->logFile, "a");
-
         $fileAndNumber = "";
         if (isset($actualFile)) {
             $fileAndNumber .= "\n    @ " . $actualFile;
@@ -107,19 +104,37 @@ class DebugHandler
             }
         }
 
-        fwrite(
-            $logFile,
-            "[" . date("H:i:s") . "] [" . $level . "] " . $message . $fileAndNumber . "\n"
+        $this->logToFile(
+            $this->logFile,
+            "[" . date("H:i:s") . "] [" . $level . "] " . $message . $fileAndNumber
         );
-
-        fclose($logFile);
     }
 
     /**
-     * Return all stored log messages formatted for html.
+     * Log an SQL query.
      * 
-     * The output will be wrapped in a `<ol class="debug-messages">` element.
+     * @param array $result An array of associative arrays containing queried data
+     */
+    public function logQuery(string $query, array $result)
+    {
+        array_push($this->queries, [
+            "query" => $query,
+            "result" => $result,
+        ]);
+
+        $formattedResult = str_replace("\n", "\n    ", json_encode($result, JSON_PRETTY_PRINT));
+
+        $this->logToFile(
+            $this->queryLogFile,
+            "[" . $query . "]\n    " . $formattedResult . "\n"
+        );
+    }
+
+    /**
+     * Inject debug bar as HTML in the result.
      * 
+     * Requires a closing `</body>` tag to work.
+     *  
      * @see `Components/LogMessage.php` to see what the output looks like.
      */
     public function injectDebugBar(string $message): string
@@ -154,22 +169,40 @@ class DebugHandler
         $this->logs = [];
     }
 
-    // Private
-
     private function readFromSession(): void
     {
         $this->logs = $_SESSION['logs'] ?? [];
         $_SESSION["logs"] = [];
     }
 
+    private function logToFile(string $file, string $content): void
+    {
+        $logFile = fopen($file, "a");
+
+        fwrite(
+            $logFile,
+            $content . "\n"
+        );
+
+        fclose($logFile);
+    }
+
     private function __construct()
     {
         $this->logFile = "Storage/Logs/" . date("Y_m_d") . ".log";
+        $this->queryLogFile = "Storage/QueryLogs/" . date("Y_m_d") . ".log";
+
         if (!file_exists("Storage/Logs")) {
             mkdir("Storage/Logs", 0777, true);
+        }
+        if (!file_exists("Storage/QueryLogs")) {
+            mkdir("Storage/QueryLogs", 0777, true);
         }
     }
 
     private $logs = [];
+    private $queries = [];
+
     private $logFile = "";
+    private $queryLogFile = "";
 }
