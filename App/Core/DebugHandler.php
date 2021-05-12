@@ -150,6 +150,7 @@ class DebugHandler
 
         $debugBar = View::component("DebugBar", [
             "messages" => $messages,
+            "queries" => $this->queries,
         ]);
 
         return str_replace("</body>", $debugBar . "\n</body>", $content);

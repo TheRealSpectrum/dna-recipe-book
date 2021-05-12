@@ -22,10 +22,13 @@ use App\Core\View;
             ?>
         </div>
         <div class="queries" data-category="queries">
-            <div>
-                <div class="query">SELECT * FROM `users` WHERE `admin` IS 1</div>
-                <div class="result">Result here lol</div>
-            </div>
+            <?php
+
+            foreach ($queries as $query) {
+                echo View::component("QueryMessage", $query);
+            }
+
+            ?>
         </div>
     </div>
 </div>
@@ -48,6 +51,7 @@ use App\Core\View;
         display: flex;
         flex-direction: row;
         background: hsl(35, 100%, 73%);
+        height: 35px;
     }
 
     .debug-bar .labels div {
@@ -58,6 +62,7 @@ use App\Core\View;
         color: hsl(180, 30%, 22%);
         font-weight: bold;
         overflow-x: hidden;
+        overflow-y: visible;
         transition-duration: 200ms;
         width: 100px;
         text-align: center;
@@ -74,12 +79,15 @@ use App\Core\View;
         position: relative;
         left: 0;
         transition-duration: 200ms;
+        position: relative;
+        height: 175px;
     }
 
     .debug-bar .content>div {
         overflow-y: scroll;
         width: 100vw;
         flex-shrink: 0;
+        height: 170px;
     }
 
     .debug-bar .content .messages {
@@ -107,6 +115,38 @@ use App\Core\View;
     .debug-bar .content .messages .file {
         color: hsl(220, 4%, 27%);
         text-decoration: underline;
+    }
+
+    .debug-bar .content .queries {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .debug-bar .content .queries>div {
+        padding: 5px;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        height: auto;
+    }
+
+    .debug-bar .content .queries>div:nth-child(even) {
+        background-color: hsl(12, 80%, 66%);
+    }
+
+    .debug-bar .content .queries>div>div>div>div {
+        height: 20px;
+        display: grid;
+        grid-template-rows: 1fr;
+        grid-template-columns: 5fr 4fr;
+        width: 200px;
+    }
+
+    .debug-bar .content .queries code {
+        background-color: hsl(0, 0%, 100%);
+        color: hsl(0, 0%, 0%);
+        border: 1px solid hsl(0, 0%, 0%);
+        padding: 3px;
     }
 </style>
 
