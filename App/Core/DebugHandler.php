@@ -137,24 +137,22 @@ class DebugHandler
      *  
      * @see `Components/LogMessage.php` to see what the output looks like.
      */
-    public function injectDebugBar(string $message): string
+    public function injectDebugBar(string $content): string
     {
-        $debugBar = "<ol class=\"debug-messages\">";
-        foreach ($this->logs as $log) {
-            $fileAndNumber = $log["file"];
-            if ($fileAndNumber && $log["line"] !== null) {
-                $fileAndNumber .= ":" . $log["line"];
-            }
+        $messages = array_values($this->logs);
 
-            $debugBar .= View::component("DebugMessage", [
-                "file" => $log["file"],
-                "level" => $log["level"],
-                "message" => $log["message"],
-                "fileAndNumber" => $fileAndNumber,
-            ]);
+        foreach ($messages as &$message) {
+            $message["fileAndNumber"] = $message["file"];
+            if ($message["fileAndNumber"] !== null && $message["line"] !== null) {
+                $message["fileAndNumber"] .= ":" . $message["line"];
+            }
         }
-        $debugBar .= "</ol>\n";
-        return str_replace("</body>", $debugBar . "\n</body>", $message);
+
+        $debugBar = View::component("DebugBar", [
+            "messages" => $messages,
+        ]);
+
+        return str_replace("</body>", $debugBar . "\n</body>", $content);
     }
 
     /**
