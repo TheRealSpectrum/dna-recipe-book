@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Core;
 
+use \App\Core\DebugHandler;
+
 class Route
 {
     public static function get(string $uri, $callback)
@@ -48,7 +50,7 @@ class Route
             }
 
             $content = $result["callback"]($result["parameters"]);
-            echo $content;
+            echo DebugHandler::getInstance()->injectDebugBar($content);
 
             break;
         }
