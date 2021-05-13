@@ -12,22 +12,4 @@ spl_autoload_register(
 
 DebugHandler::getInstance()->startup();
 
-for ($i = 0; $i < 10; ++$i) {
-    DebugHandler::getInstance()->logMessage("info", "HEY THERE");
-
-    DebugHandler::getInstance()->logQuery("SELECT * FROM `users` WHERE `admin` IS 1", [
-        [
-            "id" => 0,
-            "name" => "Damy",
-            "admin" => 1,
-        ],
-        [
-            "id" => 5,
-            "name" => "Niels",
-            "Admin" => 1,
-        ],
-    ]);
-}
-
-
 include "Routes.php";
