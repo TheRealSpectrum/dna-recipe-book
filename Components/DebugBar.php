@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * This file has been created using the power of determination and a lot of coffee.
+ * 
+ * It is an absolute miracle that it even works, please to not edit it too much, preferably not at all.
+ * Also don't copy anything starting from the style tag since it's absolute shit thank you very much.
+ */
+
 declare(strict_types=1);
 
 use App\Core\View;
@@ -7,6 +14,7 @@ use App\Core\View;
 
 <div id="debug-bar" class="debug-bar">
     <div class="labels">
+        <div class="expand">+</div>
         <div class="toggle-bar">close</div>
         <div class="category" data-category="messages">Messages</div>
         <div class="category" data-category="queries">Queries</div>
@@ -80,7 +88,7 @@ use App\Core\View;
         left: 0;
         transition-duration: 200ms;
         position: relative;
-        height: 175px;
+        height: 170px;
     }
 
     .debug-bar .content>div {
@@ -222,6 +230,8 @@ use App\Core\View;
     const QUERIES_ELEMENT = Array.from(CONTENT_ELEMENT.children).find((child) => child.classList.contains("queries"));
 
     let i = 0;
+    let isExpanded = false;
+    let expander = null;
     for (const child of LABELS_ELEMENT.children) {
         if (child.classList.contains("toggle-bar")) {
             let isOpen = true;
@@ -235,7 +245,33 @@ use App\Core\View;
                     labelChild.style.padding = isOpen ? "0" : "5px";
                     labelChild.style.width = isOpen ? "0" : "100px";
                 }
+
+                if (isOpen) {
+                    isExpanded = false;
+                    expander.textContent = "+";
+
+                    CONTENT_ELEMENT.style.height = "170px";
+                    for (const contentChild of CONTENT_ELEMENT.children) {
+                        contentChild.style.height = "170px";
+                    }
+                }
+
                 isOpen = !isOpen;
+            });
+            continue;
+        }
+        if (child.classList.contains("expand")) {
+            expander = child;
+            child.addEventListener("click", () => {
+                DEBUG_BAR_ELEMENT.style.height = isExpanded ? "200px" : "500px";
+                child.textContent = isExpanded ? "+" : "-";
+
+                CONTENT_ELEMENT.style.height = isExpanded ? "170px" : "470px";
+                for (const contentChild of CONTENT_ELEMENT.children) {
+                    contentChild.style.height = isExpanded ? "170px" : "470px";
+                }
+
+                isExpanded = !isExpanded;
             });
             continue;
         }
