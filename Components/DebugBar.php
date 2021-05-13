@@ -120,6 +120,7 @@ use App\Core\View;
     .debug-bar .content .queries {
         display: flex;
         flex-direction: column;
+        gap: 5px;
     }
 
     .debug-bar .content .queries>div {
@@ -134,12 +135,66 @@ use App\Core\View;
         background-color: hsl(12, 80%, 66%);
     }
 
-    .debug-bar .content .queries>div>div>div>div {
+    .debug-bar .content .queries .query-data {
+        display: flex;
+        flex-direction: row;
+        gap: 0px;
+        padding: 0;
+        transform: scaleY(0);
+        height: 0;
+        transition-duration: 200ms;
+    }
+
+    .debug-bar .content .queries .expanded .query-data {
+        height: auto;
+        transform: none;
+    }
+
+    .debug-bar .content .queries .query-data .expand {
+        display: inline-block;
+        width: 14px;
+        cursor: pointer;
+        transition-duration: 200ms;
+    }
+
+    .debug-bar .content .queries .query-data.expanded {
+        flex-direction: column;
+        padding: 5px;
+        border-bottom: 1px solid hsl(0, 0%, 0%);
+        transition-duration: 200ms;
+    }
+
+    .debug-bar .content .queries .query-data.expanded .expand {
+        transform: scale(-1, 1);
+    }
+
+    .debug-bar .content .queries .query-data>div+div {
         height: 20px;
+        display: flex;
+        flex-direction: row;
+        gap: 2px;
+        margin-left: 15px;
+    }
+
+    .debug-bar .content .queries .query-data.expanded>div+div {
         display: grid;
         grid-template-rows: 1fr;
         grid-template-columns: 5fr 4fr;
         width: 200px;
+    }
+
+    .debug-bar .content .queries .sql-query {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+    }
+
+    .debug-bar .content .queries .sql-query .expand {
+        padding: 0 5px;
+        font-weight: bold;
+        background-color: hsla(0, 0%, 80%, 0.5);
+        border-radius: 5px;
+        cursor: pointer;
     }
 
     .debug-bar .content .queries code {
@@ -148,12 +203,23 @@ use App\Core\View;
         border: 1px solid hsl(0, 0%, 0%);
         padding: 3px;
     }
+
+    .debug-bar .content .queries .query-data .key::before {
+        content: "|";
+        margin-right: 10px;
+    }
+
+    .debug-bar .content .queries .query-data .key::after {
+        content: ":";
+        margin-right: 2px;
+    }
 </style>
 
 <script>
     const DEBUG_BAR_ELEMENT = document.getElementById('debug-bar');
     const LABELS_ELEMENT = Array.from(DEBUG_BAR_ELEMENT.children).find((child) => child.classList.contains("labels"));
     const CONTENT_ELEMENT = Array.from(DEBUG_BAR_ELEMENT.children).find((child) => child.classList.contains("content"));
+    const QUERIES_ELEMENT = Array.from(CONTENT_ELEMENT.children).find((child) => child.classList.contains("queries"));
 
     let i = 0;
     for (const child of LABELS_ELEMENT.children) {
@@ -180,5 +246,20 @@ use App\Core\View;
             CONTENT_ELEMENT.style.left = offset;
         });
         ++i;
+    }
+
+    for (const query of QUERIES_ELEMENT.children) {
+
+        const expandToggle = query.children[0].children[2];
+        expandToggle.addEventListener("click", () => {
+            expandToggle.textContent = query.classList.toggle("expanded") ? "-" : "+";
+        })
+
+        for (const queryData of query.children[1].children) {
+            const expandButton = queryData.children[0];
+            expandButton.addEventListener("click", () => {
+                queryData.classList.toggle("expanded");
+            });
+        }
     }
 </script>

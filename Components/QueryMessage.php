@@ -6,9 +6,13 @@ use \App\Core\View;
 
 ?>
 <div>
-    <code class="sql-query">
-        <?= $query ?>
-    </code>
+    <div class="sql-query">
+        <code>
+            <?= $query ?>
+        </code>
+        <div class="count">Num = <?= count($result) ?></div>
+        <div class="expand">+</div>
+    </div>
     <div class="sql-result">
         <?php
 
