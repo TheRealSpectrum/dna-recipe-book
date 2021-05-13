@@ -36,10 +36,10 @@ class Route
     public static function list(array $routes)
     {
         $requestUri = explode("/", $_SERVER['REQUEST_URI']);
-        while ($requestUri[0] === "") {
+        while (!empty($requestUri) && $requestUri[0] === "") {
             $requestUri = array_slice($requestUri, 1);
         }
-        while ($requestUri[count($requestUri) - 1] === "") {
+        while (!empty($requestUri) && $requestUri[count($requestUri) - 1] === "") {
             $requestUri = array_slice($requestUri, 0, count($requestUri) - 1);
         }
 
@@ -60,10 +60,10 @@ class Route
     {
         $desiredUri = explode("/", $uri);
 
-        while ($desiredUri[0] === "") {
+        while (!empty($desiredUri) && $desiredUri[0] === "") {
             $desiredUri = array_slice($desiredUri, 1);
         }
-        while ($desiredUri[count($desiredUri) - 1] === "") {
+        while (!empty($desiredUri) && $desiredUri[count($desiredUri) - 1] === "") {
             $desiredUri = array_slice($desiredUri, 0, count($desiredUri) - 1);
         }
 
