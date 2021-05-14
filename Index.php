@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Core\DebugHandler;
 use App\Core\Model;
+use App\Core\Database;
 
 spl_autoload_register(
     function ($className) {
@@ -18,26 +19,31 @@ class DemoModel extends Model
     protected function serialize(): array
     {
         return [
-            "a" => $this->a,
-            "b" => $this->b,
+            "id" => $this->id,
+            "name" => $this->name,
+            "admin" => $this->admin,
         ];
     }
 
     public function deSerialize(array $data): void
     {
-        $this->a = $data["a"];
-        $this->b = $data["b"];
+        $this->id = $data["id"];
+        $this->name = $data["name"];
+        $this->admin = $data["admin"];
     }
 
-    private int $a;
-    private int $b;
+    private int $id;
+    private string $name;
+    private int $admin;
 }
 
-$demo = new DemoModel();
-$demo->deSerialize([
-    "a" => 10,
-    "b" => 20,
-]);
-$demo->store();
+$models = Database::getInstance()->getModels("SELECT * FROM `users` WHERE `admin` IS 1", function () {
+    return new DemoModel();
+});
+
+foreach ($models as $i => $model) {
+    DebugHandler::getInstance()->logMessage("info", "[" . $i . "] => " . $model);
+}
+
 
 include "Routes.php";
