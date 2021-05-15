@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Core;
 
+use \App\Core\DebugHandler;
 use \App\Core\Database;
 use \App\Core\Model;
 
@@ -19,12 +20,12 @@ final class RelationManager
         return $instance;
     }
 
-    public function loadRelationFromKey(Model $subject, string $referencedTable, string $id, string $key, callable $generator): array | Model
+    public function loadRelationFromKey(Model $subject, string $referencedTable, string $id, string $key, callable $generator): Model
     {
-        if (!empty($this->batch)) {
+        if (!empty($this->batchSubjects)) {
             $keys = [];
 
-            foreach ($this->batch as $batchSubject) {
+            foreach ($this->batchSubjects as $batchSubject) {
                 array_push($keys, $batchSubject->$key);
             }
 
@@ -32,14 +33,40 @@ final class RelationManager
 
             $batchQuery = "SELECT * FROM `$referencedTable` WHERE `$id` IN ($keyList)";
 
-            return Database::getInstance()->getModels($batchQuery, $generator);
+            $batchResults = Database::getInstance()->getRaw($batchQuery);
+
+            foreach ($batchResults as $batchResult) {
+                $this->batchResults[$batchResult[$id]] = $batchResult;
+            }
+
+            $this->batchSubjects = [];
+        }
+
+        if (!empty($this->batchResults)) {
+            $result = $generator();
+            $result->deSerialize($this->batchResults[$subject->$key]);
+            return $result;
         }
 
         $query = "SELECT * FROM `$referencedTable` WHERE `$id` IS {$subject->$key} LIMIT 1";
         return Database::getInstance()->getModels($query, $generator)[0];
     }
 
-    private array $batch = [];
+    public function batchLoad(array $subjects, string $relation): void
+    {
+        $this->batchSubjects = $subjects;
+        $reflection = new \ReflectionClass($subjects[0]);
+        $relationFunction = $reflection->getMethod($relation);
+        foreach ($subjects as $subject) {
+            $result = $relationFunction->invoke($subject);
+            DebugHandler::getInstance()->logMessage("INFO", "BATCH $result");
+        }
+
+        $this->batchResults = [];
+    }
+
+    private array $batchSubjects = [];
+    private array $batchResults = [];
 
     private function __construct()
     {

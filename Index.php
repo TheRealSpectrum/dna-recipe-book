@@ -53,6 +53,7 @@ foreach ($models as $i => $model) {
     DebugHandler::getInstance()->logMessage("info", "[" . $i . "] => " . $model);
 }
 
+RelationManager::getInstance()->batchLoad($models, "testRelation");
 DebugHandler::getInstance()->logMessage("info", (string)$models[0]->testRelation());
 
 

@@ -21,6 +21,21 @@ final class Database
 
     public function getModels(string $query, callable $generator): array
     {
+        $result = $this->getRaw($query);
+
+        $models = [];
+
+        foreach ($result as $singleResult) {
+            $nextModel = $generator();
+            $nextModel->deSerialize($singleResult);
+            array_push($models, $nextModel);
+        }
+
+        return $models;
+    }
+
+    public function getRaw(string $query): array
+    {
         // todo: implement database and get result from there.
         $result = [
             [
@@ -37,15 +52,7 @@ final class Database
 
         DebugHandler::getInstance()->logQuery($query, $result);
 
-        $models = [];
-
-        foreach ($result as $singleResult) {
-            $nextModel = $generator();
-            $nextModel->deSerialize($singleResult);
-            array_push($models, $nextModel);
-        }
-
-        return $models;
+        return $result;
     }
 
     private function __construct()
