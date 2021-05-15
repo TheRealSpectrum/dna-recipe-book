@@ -15,7 +15,7 @@ spl_autoload_register(
 
 DebugHandler::getInstance()->startup();
 
-class DemoModel extends Model
+final class DemoModel extends Model
 {
     protected function serialize(): array
     {
@@ -33,9 +33,9 @@ class DemoModel extends Model
         $this->admin = $data["admin"];
     }
 
-    public function testRelation()
+    public function test(): DemoModel
     {
-        return RelationManager::getInstance()->loadRelationFromKey($this, "test", "id", "id", function () {
+        return $this->relationFromKey("testRelation", "test", "id", "id", function () {
             return new DemoModel();
         });
     }
@@ -43,6 +43,7 @@ class DemoModel extends Model
     public int $id;
     private string $name;
     private int $admin;
+    protected ?DemoModel $testRelation = null;
 }
 
 $models = Database::getInstance()->getModels("SELECT * FROM `users` WHERE `admin` IS 1", function () {
@@ -50,11 +51,14 @@ $models = Database::getInstance()->getModels("SELECT * FROM `users` WHERE `admin
 });
 
 foreach ($models as $i => $model) {
-    DebugHandler::getInstance()->logMessage("info", "[" . $i . "] => " . $model);
+    DebugHandler::getInstance()->logMessage("INFO", "[" . $i . "] => " . $model);
 }
 
-RelationManager::getInstance()->batchLoad($models, "testRelation");
-DebugHandler::getInstance()->logMessage("info", (string)$models[0]->testRelation());
+RelationManager::getInstance()->batchLoad($models, "test");
+
+foreach ($models as $i => $model) {
+    DebugHandler::getInstance()->logMessage("INFO", "[" . $i . "] => " . $model->test());
+}
 
 
 include "Routes.php";
