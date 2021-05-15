@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Core\DebugHandler;
 use App\Core\Model;
 use App\Core\Database;
+use App\Core\RelationManager;
 
 spl_autoload_register(
     function ($className) {
@@ -32,7 +33,14 @@ class DemoModel extends Model
         $this->admin = $data["admin"];
     }
 
-    private int $id;
+    public function testRelation()
+    {
+        return RelationManager::getInstance()->loadRelationFromKey($this, "test", "id", "id", function () {
+            return new DemoModel();
+        });
+    }
+
+    public int $id;
     private string $name;
     private int $admin;
 }
@@ -44,6 +52,8 @@ $models = Database::getInstance()->getModels("SELECT * FROM `users` WHERE `admin
 foreach ($models as $i => $model) {
     DebugHandler::getInstance()->logMessage("info", "[" . $i . "] => " . $model);
 }
+
+DebugHandler::getInstance()->logMessage("info", (string)$models[0]->testRelation());
 
 
 include "Routes.php";
