@@ -52,14 +52,80 @@ final class RelationManager
         return Database::getInstance()->getModels($query, $generator)[0];
     }
 
+    public function loadRelationOne(Model $subject, string $referenceTable, string $id, string $key, callable $generator): Model
+    {
+        if (!empty($this->batchSubjects)) {
+            $ids = [];
+
+            foreach ($this->batchSubjects as $batchSubject) {
+                array_push($ids, $batchSubject->$id);
+            }
+
+            $idList = implode(', ', $ids);
+
+            $batchQuery = "SELECT * FROM `$referenceTable` WHERE `$key` IN ($idList)";
+
+            $batchResults = Database::getInstance()->getRaw($batchQuery);
+
+            foreach ($batchResults as $batchResult) {
+                $this->batchResults[$batchResult[$key]] = $batchResult;
+            }
+
+            $this->batchSubjects = [];
+        }
+
+        if (!empty($this->batchResults)) {
+            $result = $generator();
+            $result->deSerialize($this->batchResults[$subject->$key]);
+            return $result;
+        }
+
+        $query = "SELECT * FROM `$referenceTable` WHERE `$key` IS {$subject->$id} LIMIT 1";
+        return Database::getInstance()->getModels($query, $generator)[0];
+    }
+
+    public function loadRelationMany(Model $subject, string $referenceTable, string $id, string $key, callable $generator): array
+    {
+        if (!empty($this->batchSubjects)) {
+            $ids = [];
+
+            foreach ($this->batchSubjects as $batchSubject) {
+                array_push($ids, $batchSubject->$id);
+            }
+
+            $idList = implode(', ', $ids);
+
+            $batchQuery = "SELECT * FROM `$referenceTable` WHERE `$key` IN ($idList)";
+
+            $batchResults = Database::getInstance()->getRaw($batchQuery);
+
+            foreach ($batchResults as $batchResult) {
+                if (!array_key_exists($batchResult[$key], $this->batchResults)) {
+                    $this->batchResults[$batchResult[$key]] = [];
+                }
+                $model = $generator();
+                $model->deSerialize($batchResult);
+                array_push($this->batchResults[$batchResult[$key]], $model);
+            }
+
+            $this->batchSubjects = [];
+        }
+
+        if (!empty($this->batchResults)) {
+            return $this->batchResults[$subject->$key];
+        }
+
+        $query = "SELECT * FROM `$referenceTable` WHERE `$key` IS {$subject->$id}";
+        return Database::getInstance()->getModels($query, $generator);
+    }
+
     public function batchLoad(array $subjects, string $relation): void
     {
         $this->batchSubjects = $subjects;
         $reflection = new \ReflectionClass($subjects[0]);
         $relationFunction = $reflection->getMethod($relation);
         foreach ($subjects as $subject) {
-            $result = $relationFunction->invoke($subject);
-            DebugHandler::getInstance()->logMessage("INFO", "BATCH $result");
+            $relationFunction->invoke($subject);
         }
 
         $this->batchResults = [];

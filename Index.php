@@ -40,10 +40,26 @@ final class DemoModel extends Model
         });
     }
 
+    public function one(): DemoModel
+    {
+        return $this->relationOne("oneRelation", "once", "id", "id", function () {
+            return new DemoModel();
+        });
+    }
+
+    public function many(): array
+    {
+        return $this->relationMany("manyRelation", "twice", "id", "id", function () {
+            return new DemoModel();
+        });
+    }
+
     public int $id;
     private string $name;
     private int $admin;
     protected ?DemoModel $testRelation = null;
+    protected ?DemoModel $oneRelation = null;
+    protected ?array $manyRelation = null;
 }
 
 $models = Database::getInstance()->getModels("SELECT * FROM `users` WHERE `admin` IS 1", function () {
@@ -55,9 +71,15 @@ foreach ($models as $i => $model) {
 }
 
 RelationManager::getInstance()->batchLoad($models, "test");
+RelationManager::getInstance()->batchLoad($models, "one");
+RelationManager::getInstance()->batchLoad($models, "many");
 
 foreach ($models as $i => $model) {
     DebugHandler::getInstance()->logMessage("INFO", "[" . $i . "] => " . $model->test());
+    DebugHandler::getInstance()->logMessage("INFO", "[" . $i . "] => " . $model->one());
+    foreach ($model->many() as $j => $oneOfMany) {
+        DebugHandler::getInstance()->logMessage("INFO", "[" . $i . "," . $j . "] => " . $oneOfMany);
+    }
 }
 
 
