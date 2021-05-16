@@ -35,6 +35,55 @@ __Actual controllers:__
 
 ## Database
 
+```mermaid
+erDiagram
+
+  RECIPE ||--|{ INGREDIENT : has 
+  RECIPE ||--|{ STEP : has
+  CATEGORY }|--|{ RECIPE: categorizes
+  USER }|--|| RECIPE: authors
+
+  CATEGORY {
+    INT id
+    TEXT_30 title
+    TEXT_500 description
+  }
+
+  USER {
+    INT id
+    TEXT_30 name
+    VARCHAR password
+    BOOL isAdmin
+  }
+
+  RECIPE {
+    INT id
+    TEXT_30 title
+    TEXT_500 description
+    INT author_id
+    INT preparation_time
+    INT cooking_time
+    INT num_servings
+    VARCHAR_20 image
+  }
+
+  INGREDIENT {
+    INT id
+    INT recipe_id
+    TEXT_30 name
+    TEXT_30 quantity
+  }
+
+  STEP {
+    INT id
+    TEXT_30 title
+    TEXT_500 description
+    INT index
+    INT recipe_id
+  }
+
+```
+
 - Recipe
   - id
   - Title
@@ -56,7 +105,7 @@ __Actual controllers:__
   - Recipe id
 - Category
   - id
-  - name
+  - title
   - description
 - Category pivot
   - Category id
@@ -66,12 +115,3 @@ __Actual controllers:__
   - name
   - password
   - isAdmin
-
-<!-- ```mermaid
-erDiagram
-
-  RECIPE ||--|{ INGREDIENT : has 
-
-``` -->
-
-
