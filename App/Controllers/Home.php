@@ -18,4 +18,8 @@ class Home extends Controller
             "testValue" => $a,
         ]);
     }
+    function layout()
+    {
+        return View::view("Layout");
+    }
 }
