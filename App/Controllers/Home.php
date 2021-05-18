@@ -9,7 +9,7 @@ class Home extends Controller
 {
     function home()
     {
-        return View::view("Home");
+        return View::view("Layout");
     }
 
     function test($a)
@@ -17,13 +17,5 @@ class Home extends Controller
         return View::view("Test", [
             "testValue" => $a,
         ]);
-    }
-    function layout()
-    {
-        return View::view("Layout");
-    }
-    function recipes()
-    {
-        return View::view("Recipes");
     }
 }
