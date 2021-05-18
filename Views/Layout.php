@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/146730865b.js" crossorigin="anonymous"></script>
-    <title>Document</title>
+    <title>Blueprint Cooking</title>
 </head>
 <body>
   <!-- Header -->
@@ -20,8 +20,8 @@
         <span class="ml-3 text-xl">Blueprint Cooking</span>
       </a>
       <nav class="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
-        <a href="#" class="mr-5 hover:text-white">Home</a>
-        <a href="#" class="mr-5 hover:text-white">Recipes</a>
+        <a href="/" class="mr-5 hover:text-white">Home</a>
+        <a href="/recipes" class="mr-5 hover:text-white">Recipes</a>
         <a href="#" class="mr-5 hover:text-white">Third Link</a>
         <a href="#" class="mr-5 hover:text-white">Fourth Link</a>
       </nav>

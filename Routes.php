@@ -9,4 +9,5 @@ Route::list([
     Route::get("/", $homeController->parse('home')),
     Route::get("/test/:a", $homeController->parse('test')),
     Route::get("/layout", $homeController->parse('Layout')),
+    Route::get("/recipes", $homeController->parse('Recipes')),
 ]);

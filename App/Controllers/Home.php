@@ -22,4 +22,8 @@ class Home extends Controller
     {
         return View::view("Layout");
     }
+    function recipes()
+    {
+        return View::view("Recipes");
+    }
 }
