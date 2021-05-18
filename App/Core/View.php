@@ -6,7 +6,7 @@ namespace App\Core;
 
 class View
 {
-    public static function view(string $viewName, array $viewContext = []): string
+    public static function view(string $viewName, array $viewContext = [], ?string $layoutName = null): string
     {
         foreach ($viewContext as $key => $value) {
             $$key = $value;
@@ -17,7 +17,20 @@ class View
         $viewResult = ob_get_contents();
         ob_end_clean();
 
-        return $viewResult;
+        if ($layoutName === null) {
+            return $viewResult;
+        }
+
+        $yield = function () use ($viewResult) {
+            return $viewResult;
+        };
+
+        ob_start();
+        include "Layouts/$layoutName.php";
+        $layoutResult = ob_get_contents();
+        ob_end_clean();
+
+        return $layoutResult;
     }
 
     public static function component(string $componentName, array $componentContext): string
