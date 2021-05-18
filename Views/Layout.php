@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/146730865b.js" crossorigin="anonymous"></script>
     <title>Document</title>
 </head>
 <body>
@@ -19,10 +20,10 @@
         <span class="ml-3 text-xl">Blueprint Cooking</span>
       </a>
       <nav class="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
-        <a class="mr-5 hover:text-white">Home</a>
-        <a class="mr-5 hover:text-white">Recipes</a>
-        <a class="mr-5 hover:text-white">Third Link</a>
-        <a class="mr-5 hover:text-white">Fourth Link</a>
+        <a href="#" class="mr-5 hover:text-white">Home</a>
+        <a href="#" class="mr-5 hover:text-white">Recipes</a>
+        <a href="#" class="mr-5 hover:text-white">Third Link</a>
+        <a href="#" class="mr-5 hover:text-white">Fourth Link</a>
       </nav>
       <button class="inline-flex items-center bg-gray-800 border-0 py-1 px-3 focus:outline-none hover:bg-gray-700 rounded text-base mt-4 md:mt-0">Button
         <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
