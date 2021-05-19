@@ -23,7 +23,7 @@ class ConcreteModel extends \App\Core\Model
     {
     }
 
-    protected array $rows = ["id", "name", "admin"];
+    protected array $columns = ["id", "name", "admin"];
     protected string $table = "users";
 }
 

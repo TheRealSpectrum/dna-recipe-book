@@ -72,10 +72,10 @@ abstract class Model
         if ($this->new) {
             $data = [];
             $rows = [];
-            foreach ($this->rows as $row) {
-                if (property_exists($this, $row)) {
-                    array_push($data, $this->$row);
-                    array_push($rows, $row);
+            foreach ($this->columns as $column) {
+                if (property_exists($this, $column)) {
+                    array_push($data, $this->$column);
+                    array_push($rows, $column);
                 }
             }
 
@@ -86,23 +86,23 @@ abstract class Model
             $this->new = false;
         } else {
             $updates = [];
-            foreach ($this->rows as $row) {
-                if (property_exists($this, $row)) {
-                    array_push($updates, "$row = {$this->$row}");
+            foreach ($this->columns as $column) {
+                if (property_exists($this, $column)) {
+                    array_push($updates, "$column = {$this->$column}");
                 }
             }
 
             $updatesString = implode(", ", $updates);
-            Database::getInstance()->getRaw("UPDATE `{$this->table}` SET $updatesString WHERE '{$this->idRow}' is {$this->{$this->idRow}}");
+            Database::getInstance()->getRaw("UPDATE `{$this->table}` SET $updatesString WHERE '{$this->idColumn}' is {$this->{$this->idColumn}}");
         }
     }
 
     public function __toString()
     {
         $data = [];
-        foreach ($this->rows as $row) {
-            if (property_exists($this, $row)) {
-                $data[$row] = $this->$row;
+        foreach ($this->columns as $column) {
+            if (property_exists($this, $column)) {
+                $data[$column] = $this->$column;
             }
         }
         return json_encode($data);
@@ -144,16 +144,16 @@ abstract class Model
         return $this->$property;
     }
 
-    protected array $rows = [];
+    protected array $columns = [];
     protected string $table = "";
-    protected string $idRow = "id";
+    protected string $idColumn = "id";
 
     private bool $new = true;
 
     final private function fill(array $values): void
     {
         foreach ($values as $key => $value) {
-            if (!in_array($key, $this->rows)) {
+            if (!in_array($key, $this->columns)) {
                 throw new \Exception("Value of name $key not defined in Model");
             }
             $this->$key = $value;
