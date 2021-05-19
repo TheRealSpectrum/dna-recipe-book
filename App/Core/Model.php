@@ -56,14 +56,41 @@ abstract class Model
      */
     final public function store()
     {
-        DebugHandler::getInstance()->logMessage("info", json_encode($this->serialize()));
+        if ($this->new) {
+            $data = [];
+            $rows = [];
+            foreach ($this->rows as $row) {
+                if (property_exists($this, $row)) {
+                    array_push($data, $this->$row);
+                    array_push($rows, $row);
+                }
+            }
+
+            $columnsString = implode(', ', $rows);
+            $dataString = implode(', ', $data);
+
+            Database::getInstance()->getRaw("INSERT INTO `{$this->table}` ($columnsString) VALUES ($dataString)");
+            $this->new = false;
+        } else {
+            $updates = [];
+            foreach ($this->rows as $row) {
+                if (property_exists($this, $row)) {
+                    array_push($updates, "$row = {$this->$row}");
+                }
+            }
+
+            $updatesString = implode(", ", $updates);
+            Database::getInstance()->getRaw("UPDATE `{$this->table}` SET $updatesString WHERE '{$this->idRow}' is {$this->{$this->idRow}}");
+        }
     }
 
     public function __toString()
     {
         $data = [];
         foreach ($this->rows as $row) {
-            $data[$row] = $this->$row;
+            if (property_exists($this, $row)) {
+                $data[$row] = $this->$row;
+            }
         }
         return json_encode($data);
     }
@@ -105,6 +132,9 @@ abstract class Model
     }
 
     protected array $rows = [];
+    protected string $table = "";
+    protected string $idRow = "id";
+
     private bool $new = true;
 
     final private function fill(array $values): void
