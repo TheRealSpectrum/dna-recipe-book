@@ -24,6 +24,26 @@ abstract class Model
     abstract protected function serialize(): array;
     abstract public function deSerialize(array $data): void;
 
+    final static public function create(array $values): Model
+    {
+        $reflection = new \ReflectionClass(get_called_class());
+        $result = $reflection->newInstance();
+
+        $result->fill($values);
+
+        return $result;
+    }
+
+    final public function fill(array $values): void
+    {
+        foreach ($values as $key => $value) {
+            if (!in_array($key, $this->rows)) {
+                throw new \Exception("Value of name $key not defined in Model");
+            }
+            $this->$key = $value;
+        }
+    }
+
     /**
      * Store current state in the database.
      */
@@ -72,4 +92,7 @@ abstract class Model
 
         return $this->$property;
     }
+
+    protected array $rows = [];
+    private bool $new = true;
 }
