@@ -4,8 +4,7 @@ This is an example of how to use the MVC system.
 
 ## Route.php
 
-`ConcreteController` extends `Controller`.
-The list function goes through a number of possible routes and chooses the first one that matches.
+The run function goes through all routes in order and applies the first one that matches.
 
 The first argument is the uri.
 Normal text is take as is, so the uri `/uri` expects the user to go to `https://<<domain>>/uri`.
@@ -13,19 +12,20 @@ Any part that start with `:` is a parameter, and can be *anything*.
 For example, the uri `/uri/:param` does match the url `https://<<domain>>/uri/1`.
 If the number of parts do not match it will never work.
 So the uri `uri/:param` does **not** match `https://<<domain>>/uri/1/2`.
-The parse function takes the name of a function as its argument.
-So the function `func` will be called.
-If this functions defines a variable with the name `$param` it will automatically inject the value of the parameter.
+
+The second part expects an array with 2 values.
+The first value is the class name of a class which extends Controller.
+The second value is the name of a function that will be called.
+In this case the function `func` will be called.
+If this functions defines a variable with the name of a parameter, in this case it should be `$param`, it will automatically inject the value of the parameter with that name.
 So if the url `http://<domain>/uri/1` is requested the value of `$param` will be set to `"1"`.
 Note that this is a string, not a number.
 
 > I am not sure what happens if you set the parameter type to int, feel free to update the documentation.
 
 ```php
-$controller = new ConcreteController();
-
-Route::list([
-        Route::get("/uri/:param", $controller->parse("func")),
+Route::run([
+        Route::get("/uri/:param", [ConcreteController::class, "func]),
     ]);
 ```
 
