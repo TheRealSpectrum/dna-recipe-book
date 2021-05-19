@@ -34,14 +34,21 @@ abstract class Model
         return $result;
     }
 
-    final public function fill(array $values): void
+    final static public function query(string $query): array
     {
-        foreach ($values as $key => $value) {
-            if (!in_array($key, $this->rows)) {
-                throw new \Exception("Value of name $key not defined in Model");
-            }
-            $this->$key = $value;
+        $reflection = new \ReflectionClass(get_called_class());
+        $queryResult = Database::getInstance()->getRaw($query);
+
+        $result = [];
+
+        foreach ($queryResult as $modelData) {
+            $next = $reflection->newInstance();
+            $next->fill($modelData);
+            $next->new = false;
+            array_push($result, $next);
         }
+
+        return $result;
     }
 
     /**
@@ -54,7 +61,11 @@ abstract class Model
 
     public function __toString()
     {
-        return json_encode($this->serialize());
+        $data = [];
+        foreach ($this->rows as $row) {
+            $data[$row] = $this->$row;
+        }
+        return json_encode($data);
     }
 
     /**
@@ -95,4 +106,14 @@ abstract class Model
 
     protected array $rows = [];
     private bool $new = true;
+
+    final private function fill(array $values): void
+    {
+        foreach ($values as $key => $value) {
+            if (!in_array($key, $this->rows)) {
+                throw new \Exception("Value of name $key not defined in Model");
+            }
+            $this->$key = $value;
+        }
+    }
 }
