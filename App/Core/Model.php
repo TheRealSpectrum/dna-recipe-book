@@ -21,8 +21,21 @@ use \App\Core\RelationManager;
  */
 abstract class Model
 {
-    abstract protected function serialize(): array;
-    abstract public function deSerialize(array $data): void;
+    /**
+     * @deprecated
+     */
+    protected function serialize(): array
+    {
+        DebugHandler::getInstance()->logMessage("DEPRECATED", "Deprecated function `Model::serialize`");
+        return [];
+    }
+    /**
+     * @deprecated
+     */
+    public function deSerialize(array $data): void
+    {
+        DebugHandler::getInstance()->logMessage("DEPRECATED", "Deprecated function `Model::deSerialize`");
+    }
 
     final static public function create(array $values): Model
     {
