@@ -6,7 +6,12 @@ namespace App\Core;
 
 use \App\Core\DebugHandler;
 
-class Route
+/**
+ * Pure static class used for routing.
+ * 
+ * @see `Docs/Example.md` for a clear example on how to use this class.
+ */
+final class Route
 {
     public static function get(string $uri, $callback)
     {
@@ -33,7 +38,14 @@ class Route
         return Route::route("DELETE", $uri, $callback);
     }
 
-    public static function list(array $routes)
+    /**
+     * Run the router
+     * 
+     * @param array $routes list of all possible routes in order.
+     *  The first route that matches will be applied.
+     *  Use other functions in `Route` to define the routes.
+     */
+    public static function run(array $routes): void
     {
         $requestUri = explode("/", $_SERVER['REQUEST_URI']);
         while (!empty($requestUri) && $requestUri[0] === "") {
@@ -56,6 +68,15 @@ class Route
         }
     }
 
+    /**
+     * @deprecated use `Route::run` instead.
+     */
+    public static function list(array $routes): void
+    {
+        DebugHandler::getInstance()->logMessage("DEPRECATED", "Deprecated function `Route::list` called. Use `Route::run` instead.");
+        Route::run($routes);
+    }
+
     private static function route(string $method, string $uri, $callback)
     {
         $desiredUri = explode("/", $uri);
@@ -75,9 +96,16 @@ class Route
                 return null;
             }
 
+            $routeCallback = $callback;
+            if (gettype($callback) === "array") {
+                $controllerReflection = new \ReflectionClass($callback[0]);
+                $controllerInstance = $controllerReflection->newInstance();
+                $routeCallback = $controllerInstance->defineControlledRoute($callback[1]);
+            }
+
             $result = [
                 "parameters" => [],
-                "callback" => $callback,
+                "callback" => $routeCallback,
             ];
 
             foreach ($requestUri as $index => $value) {
