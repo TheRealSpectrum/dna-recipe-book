@@ -60,33 +60,23 @@ final class ConcreteController extends Controller
 
 ## Model
 
-The `serialize` method must take the data from the fields and put them in an array which will in turn be passed to the SQL database.
-The `deSerialize` method does the reverse, and must put the results from an SQL query in the class fields.
+`$columns` are the allowed colums.
+These are the columns defined in the database.
+If an invalid column is filled an exception is thrown.
+
+`$table` is the table in the database which the model is accessing.
+
+`$idColumn` is the unique identifier for this specific model.
+It defaults to `"id"`, so it is set unnescesarily in this example.
 
 For more information on relations see [`Docs/Relations.md`](./Relations.md).
 
 ```php
 final class ConcreteModel extends Model
 {
-    protected function serialize(): array
-    {
-        return [
-            "id" => $this->id,
-            "thing" => $this->thing,
-            "referencedId" => $this->referencedId,
-            "oneId" => $this->oneId,
-            "manyId" => $this->manyId,
-        ];
-    }
-
-    public function deSerialize(array $data): void
-    {
-        $this->id = $data["id"];
-        $this->thing = $data["thing"];
-        $this->referencedId = $data["referencedId"];
-        $this->oneId = $data["oneId"];
-        $this->manyId = $data["manyId"];
-    }
+   protected array $columns = ["id", "thing", "referenced_id", "one_id", "many_id"]; 
+   protected string $table = "users";
+   protected string $idColumn = "id";
 
     public function referenced(): ConcreteModel
     {
@@ -94,7 +84,7 @@ final class ConcreteModel extends Model
             "referencedRelation",
             "users",
             "id",
-            "referencedId",
+            "referenced_id",
             function()
             {
                 return new ConcreteModel();
@@ -108,7 +98,7 @@ final class ConcreteModel extends Model
             "oneRelation",
             "users",
             "id",
-            "oneId",
+            "one_id",
             function()
             {
                 return new ConcreteModel();
@@ -122,19 +112,13 @@ final class ConcreteModel extends Model
             "manyRelation",
             "users",
             "id",
-            "manyId",
+            "many_id",
             function()
             {
                 return new ConcreteModel();
             }
         );
     }
-
-    public int $id;
-    public string $thing;
-    public int $referencedId;
-    public int $oneId;
-    public int $manyId;
 
     protected ?ConcreteModel $referencedRelation = null;
     protected ?ConcreteModel $oneRelation = null;
