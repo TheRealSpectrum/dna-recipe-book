@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\AuthController;
+use App\Controllers\CategoryController;
 use \App\Controllers\Home;
 use \App\Controllers\RecipeController;
 use App\Controllers\UserController;
@@ -15,5 +16,7 @@ Route::run([
     Route::get("/logout", [AuthController::class, "logout"]),
 
     Route::resource("/users", UserController::class),
+
+    Route::resource("/categories", CategoryController::class),
 
 ]);
