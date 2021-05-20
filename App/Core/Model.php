@@ -50,7 +50,7 @@ abstract class Model
     final static public function query(string $query): array
     {
         $reflection = new \ReflectionClass(get_called_class());
-        $queryResult = Database::getInstance()->getRaw($query);
+        $queryResult = Database::getInstance()->query($query);
 
         $result = [];
 
@@ -70,30 +70,54 @@ abstract class Model
     final public function store()
     {
         if ($this->new) {
+            $columns = [];
             $data = [];
-            $rows = [];
             foreach ($this->columns as $column) {
                 if (property_exists($this, $column)) {
-                    array_push($data, $this->$column);
-                    array_push($rows, $column);
+                    $value = "";
+                    switch (gettype($this->$column)) {
+                        case "string":
+                            $value = "\"{$this->$column}\"";
+                            break;
+                        case "integer":
+                            $value = (string)$this->$column;
+                            break;
+                        default:
+                            DebugHandler::getInstance()->logMessage("WARNING", "Unsupported type used in database: " . gettype($this->$column));
+                            $value = (string)$this->$column;
+                    }
+                    array_push($columns, "`$column`");
+                    array_push($data, $value);
                 }
             }
 
-            $columnsString = implode(', ', $rows);
+            $columnsString = implode(', ', $columns);
             $dataString = implode(', ', $data);
 
-            Database::getInstance()->getRaw("INSERT INTO `{$this->table}` ($columnsString) VALUES ($dataString)");
+            Database::getInstance()->query("INSERT INTO `{$this->table}` ($columnsString) VALUES ($dataString)");
             $this->new = false;
         } else {
             $updates = [];
             foreach ($this->columns as $column) {
-                if (property_exists($this, $column)) {
-                    array_push($updates, "$column = {$this->$column}");
+                if (property_exists($this, $column) && $column !== $this->idColumn) {
+                    $value = "";
+                    switch (gettype($this->$column)) {
+                        case "string":
+                            $value = "\"{$this->$column}\"";
+                            break;
+                        case "integer":
+                            $value = (string)$this->$column;
+                            break;
+                        default:
+                            DebugHandler::getInstance()->logMessage("WARNING", "Unsupported type used in database: " . gettype($this->$column));
+                            $value = (string)$this->$column;
+                    }
+                    array_push($updates, "`$column` = $value");
                 }
             }
 
             $updatesString = implode(", ", $updates);
-            Database::getInstance()->getRaw("UPDATE `{$this->table}` SET $updatesString WHERE '{$this->idColumn}' is {$this->{$this->idColumn}}");
+            Database::getInstance()->query("UPDATE `{$this->table}` SET $updatesString WHERE `$this->table`.`{$this->idColumn}` = {$this->{$this->idColumn}}");
         }
     }
 
