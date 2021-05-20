@@ -1,11 +1,22 @@
 <?php
 
+use App\Controllers\AuthController;
+use App\Controllers\CategoryController;
 use \App\Controllers\Home;
+use \App\Controllers\RecipeController;
+use App\Controllers\UserController;
 use \App\Core\Route;
 
-$homeController = new Home();
 
-Route::list([
-    Route::get("/", $homeController->parse('home')),
-    Route::get("/test/:a", $homeController->parse('test')),
+
+Route::run([
+    Route::resource("/recipes", RecipeController::class),
+
+    Route::get("/login", [AuthController::class, "login"]),
+    Route::get("/logout", [AuthController::class, "logout"]),
+
+    Route::resource("/users", UserController::class),
+
+    Route::resource("/categories", CategoryController::class),
+
 ]);
