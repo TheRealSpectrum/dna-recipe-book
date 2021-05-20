@@ -38,6 +38,21 @@ final class Route
         return Route::route("DELETE", $uri, $callback);
     }
 
+    public static function resource(string $uri, string $controller)
+    {
+        return function (array $requestUri) use ($uri, $controller) {
+            return Route::searchInRoutesArray($requestUri, [
+                Route::get($uri, [$controller, "index"]),
+                Route::get("$uri/create", [$controller, "create"]),
+                Route::post($uri, [$controller, "store"]),
+                Route::get("$uri/:id", [$controller, "show"]),
+                Route::get("$uri/:id/edit", [$controller, "edit"]),
+                Route::patch("$uri/:id", [$controller, "update"]),
+                Route::delete("$uri/:id", [$controller, "destroy"]),
+            ]);
+        };
+    }
+
     /**
      * Run the router
      * 
@@ -54,18 +69,9 @@ final class Route
         while (!empty($requestUri) && $requestUri[count($requestUri) - 1] === "") {
             $requestUri = array_slice($requestUri, 0, count($requestUri) - 1);
         }
-
-        foreach ($routes as $route) {
-            $result = $route($requestUri);
-            if ($result === null) {
-                continue;
-            }
-
-            $content = $result["callback"]($result["parameters"]);
-            echo DebugHandler::getInstance()->injectDebugBar($content);
-
-            break;
-        }
+        $result = Route::searchInRoutesArray($requestUri, $routes);
+        $content = $result["callback"]($result["parameters"]);
+        echo DebugHandler::getInstance()->injectDebugBar($content);
     }
 
     /**
@@ -75,6 +81,17 @@ final class Route
     {
         DebugHandler::getInstance()->logMessage("DEPRECATED", "Deprecated function `Route::list` called. Use `Route::run` instead.");
         Route::run($routes);
+    }
+
+    private static function searchInRoutesArray(array $requestUri, array $routes): ?array
+    {
+        foreach ($routes as $route) {
+            $result = $route($requestUri);
+            if ($result !== null) {
+                return $result;
+            }
+        }
+        return null;
     }
 
     private static function route(string $method, string $uri, $callback)
