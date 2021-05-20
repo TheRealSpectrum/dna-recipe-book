@@ -6,7 +6,7 @@ namespace App\Controllers;
 use \App\Core\Controller;
 use \App\Core\View;
 
-class RecipesController extends Controller
+class RecipeController extends Controller
 {
     function index()
     {
