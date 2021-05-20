@@ -3,6 +3,7 @@
 use App\Controllers\AuthController;
 use \App\Controllers\Home;
 use \App\Controllers\RecipeController;
+use App\Controllers\UserController;
 use \App\Core\Route;
 
 
@@ -13,5 +14,6 @@ Route::run([
     Route::get("/login", [AuthController::class, "login"]),
     Route::get("/logout", [AuthController::class, "logout"]),
 
+    Route::resource("/users", UserController::class),
 
 ]);
