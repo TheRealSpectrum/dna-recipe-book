@@ -43,7 +43,8 @@ final class Database
         }
 
         if ($database === false) {
-            $database = "database";
+            DebugHandler::getInstance()->logMessage("WARNING", "No database provided in environment.");
+            return;
         }
 
         $this->database = new \mysqli($host, $user, $password, $database);
