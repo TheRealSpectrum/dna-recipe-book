@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Core\DebugHandler;
+use App\Core\Database;
 
 spl_autoload_register(
     function ($className) {
@@ -11,6 +12,11 @@ spl_autoload_register(
 );
 
 DebugHandler::getInstance()->startup();
+try {
+    Database::getInstance()->connect();
+} catch (\Throwable $error) {
+    DebugHandler::getInstance()->logMessage("ERROR", (string)$error);
+}
 
 class ConcreteModel extends \App\Core\Model
 {
@@ -27,7 +33,7 @@ class ConcreteModel extends \App\Core\Model
     protected string $table = "users";
 }
 
-$concreteModels = ConcreteModel::query("SELECT * FROM `users` WHERE `admin` IS 1");
+$concreteModels = ConcreteModel::query("SELECT * FROM `users` WHERE `admin` = 1");
 
 foreach ($concreteModels as $model) {
     DebugHandler::getInstance()->logMessage("INFO", (string)$model);
@@ -35,7 +41,7 @@ foreach ($concreteModels as $model) {
 }
 
 $newModel = ConcreteModel::create([
-    "name" => "Maaike",
+    "name" => "Ian",
     "admin" => 0,
 ]);
 

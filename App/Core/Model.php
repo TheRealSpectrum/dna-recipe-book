@@ -74,7 +74,19 @@ abstract class Model
             $rows = [];
             foreach ($this->columns as $column) {
                 if (property_exists($this, $column)) {
-                    array_push($data, $this->$column);
+                    $value = "";
+                    switch (gettype($this->$column)) {
+                        case "string":
+                            $value = "\"{$this->$column}\"";
+                            break;
+                        case "integer":
+                            $value = (string)$this->$column;
+                            break;
+                        default:
+                            DebugHandler::getInstance()->logMessage("WARNING", "Unsupported type used in database: " . gettype($this->$column));
+                            $value = (string)$this->$column;
+                    }
+                    array_push($data, $value);
                     array_push($rows, $column);
                 }
             }
