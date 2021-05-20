@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Core\DebugHandler;
+use App\Core\Database;
 
 spl_autoload_register(
     function ($className) {
@@ -12,4 +13,8 @@ spl_autoload_register(
 
 DebugHandler::getInstance()->startup();
 
+Database::getInstance()->connect();
+
 include "Routes.php";
+
+Database::getInstance()->disconnect();

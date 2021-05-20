@@ -21,20 +21,115 @@ use \App\Core\RelationManager;
  */
 abstract class Model
 {
-    abstract protected function serialize(): array;
-    abstract public function deSerialize(array $data): void;
+    /**
+     * @deprecated
+     */
+    protected function serialize(): array
+    {
+        DebugHandler::getInstance()->logMessage("DEPRECATED", "Deprecated function `Model::serialize`");
+        return [];
+    }
+    /**
+     * @deprecated
+     */
+    public function deSerialize(array $data): void
+    {
+        DebugHandler::getInstance()->logMessage("DEPRECATED", "Deprecated function `Model::deSerialize`");
+    }
+
+    final static public function create(array $values): Model
+    {
+        $reflection = new \ReflectionClass(get_called_class());
+        $result = $reflection->newInstance();
+
+        $result->fill($values);
+
+        return $result;
+    }
+
+    final static public function query(string $query): array
+    {
+        $reflection = new \ReflectionClass(get_called_class());
+        $queryResult = Database::getInstance()->query($query);
+
+        $result = [];
+
+        foreach ($queryResult as $modelData) {
+            $next = $reflection->newInstance();
+            $next->fill($modelData);
+            $next->new = false;
+            array_push($result, $next);
+        }
+
+        return $result;
+    }
 
     /**
      * Store current state in the database.
      */
     final public function store()
     {
-        DebugHandler::getInstance()->logMessage("info", json_encode($this->serialize()));
+        if ($this->new) {
+            $columns = [];
+            $data = [];
+            foreach ($this->columns as $column) {
+                if (property_exists($this, $column)) {
+                    $value = "";
+                    switch (gettype($this->$column)) {
+                        case "string":
+                            $value = "\"{$this->$column}\"";
+                            break;
+                        case "integer":
+                            $value = (string)$this->$column;
+                            break;
+                        default:
+                            DebugHandler::getInstance()->logMessage("WARNING", "Unsupported type used in database: " . gettype($this->$column));
+                            $value = (string)$this->$column;
+                    }
+                    array_push($columns, "`$column`");
+                    array_push($data, $value);
+                }
+            }
+
+            $columnsString = implode(', ', $columns);
+            $dataString = implode(', ', $data);
+
+            Database::getInstance()->query("INSERT INTO `{$this->table}` ($columnsString) VALUES ($dataString)");
+            $this->new = false;
+        } else {
+            $updates = [];
+            foreach ($this->columns as $column) {
+                if (property_exists($this, $column) && $column !== $this->idColumn) {
+                    $value = "";
+                    switch (gettype($this->$column)) {
+                        case "string":
+                            $value = "\"{$this->$column}\"";
+                            break;
+                        case "integer":
+                            $value = (string)$this->$column;
+                            break;
+                        default:
+                            DebugHandler::getInstance()->logMessage("WARNING", "Unsupported type used in database: " . gettype($this->$column));
+                            $value = (string)$this->$column;
+                    }
+                    array_push($updates, "`$column` = $value");
+                }
+            }
+
+            $updatesString = implode(", ", $updates);
+            Database::getInstance()->query("UPDATE `{$this->table}` SET $updatesString WHERE `$this->table`.`{$this->idColumn}` = {$this->{$this->idColumn}}");
+        }
     }
 
     public function __toString()
     {
-        return json_encode($this->serialize());
+        $data = [];
+        foreach ($this->columns as $column) {
+            if (property_exists($this, $column)) {
+                $data[$column] = $this->$column;
+            }
+        }
+        return json_encode($data);
     }
 
     /**
@@ -71,5 +166,21 @@ abstract class Model
         }
 
         return $this->$property;
+    }
+
+    protected array $columns = [];
+    protected string $table = "";
+    protected string $idColumn = "id";
+
+    private bool $new = true;
+
+    final private function fill(array $values): void
+    {
+        foreach ($values as $key => $value) {
+            if (!in_array($key, $this->columns)) {
+                throw new \Exception("Value of name $key not defined in Model");
+            }
+            $this->$key = $value;
+        }
     }
 }
