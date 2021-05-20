@@ -9,7 +9,7 @@ use \App\Core\DebugHandler;
 final class Database
 {
     // Singleton
-    public static function getInstance()
+    public static function getInstance(): Database
     {
         static $instance = null;
         if ($instance === null) {
@@ -21,6 +21,10 @@ final class Database
 
     public function connect(): void
     {
+        if ($this->database !== null) {
+            DebugHandler::getInstance()->logMessage("WARNING", "database object already exists");
+        }
+
         $host = getenv("DB_HOST");
         $user = getenv("DB_USER");
         $password = getenv("DB_PASSWORD");
@@ -45,18 +49,27 @@ final class Database
         $this->database = new \mysqli($host, $user, $password, $database);
         if ($this->database->connect_error) {
             // todo: thow custom exception
-            throw new \Exception("Database connection failed: {$this->database->connect_error}");
+            $this->database = null;
+            DebugHandler::getInstance()->logMessage("ERROR", "Database connection failed: {$this->database->connect_error}");
         }
     }
 
     public function disconnect(): void
     {
+        if ($this->database === null) {
+            DebugHandler::getInstance()->logMessage("WARNING", "database object doesn't exists");
+            return;
+        }
         $this->database->close();
         $this->database = null;
     }
 
+    /**
+     * @deprecated use `Model::query` instead.
+     */
     public function getModels(string $query, callable $generator): array
     {
+        DebugHandler::getInstance()->logMessage("DEPRECATED", "Deprecated function `Database::getModels` called. Use `Model::query` instead.");
         $result = $this->getRaw($query);
 
         $models = [];
@@ -70,14 +83,19 @@ final class Database
         return $models;
     }
 
-    public function getRaw(string $query): array
+    public function query(string $query): array
     {
+        if ($this->database === null) {
+            // todo: Add custom exception.
+            throw new \Exception("Attempted query but there is no connection to a database");
+        }
+
         $queryResult = $this->database->query($query);
         if ($queryResult === false) {
             DebugHandler::getInstance()->logMessage("ERROR", "Query failed: `$query`");
             throw new \Exception("Query failed");
         }
-        $result = $queryResult === true ? [] : $queryResult->fetch_array(MYSQLI_ASSOC) ?? [];
+        $result = $queryResult === true ? [] : $queryResult->fetch_all(MYSQLI_ASSOC) ?? [];
         if ($result === false) {
             $result = [];
         }
@@ -85,6 +103,15 @@ final class Database
         DebugHandler::getInstance()->logQuery($query, $result);
 
         return $result;
+    }
+
+    /**
+     * @deprecated use `Database::query` instead.
+     */
+    public function getRaw(string $query): array
+    {
+        DebugHandler::getInstance()->logMessage("DEPRECATED", "Deprecated function `Database::getRaw` called. Use `Database::query` instead.");
+        return $this->query($query);
     }
 
     private function __construct()

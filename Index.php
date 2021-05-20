@@ -37,6 +37,7 @@ $concreteModels = ConcreteModel::query("SELECT * FROM `users` WHERE `admin` = 1"
 
 foreach ($concreteModels as $model) {
     DebugHandler::getInstance()->logMessage("INFO", (string)$model);
+    $model->name .= "+";
     $model->store();
 }
 
@@ -48,3 +49,5 @@ $newModel = ConcreteModel::create([
 $newModel->store();
 
 include "Routes.php";
+
+Database::getInstance()->disconnect();
