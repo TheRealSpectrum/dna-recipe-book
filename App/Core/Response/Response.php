@@ -27,6 +27,6 @@ abstract class Response
         }
     }
 
-    abstract public function applyProduction(): void;
-    abstract public function applyDevelopment(): void;
+    abstract protected function applyProduction(): void;
+    abstract protected function applyDevelopment(): void;
 }

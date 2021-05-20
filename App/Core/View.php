@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Core;
 
+use \App\Core\Response\HtmlResponse;
+
 class View
 {
-    public static function view(string $viewName, array $viewContext = [], ?string $layoutName = null): string
+    public static function view(string $viewName, array $viewContext = [], ?string $layoutName = null): HtmlResponse
     {
         foreach ($viewContext as $key => $value) {
             $$key = $value;
@@ -18,7 +20,7 @@ class View
         ob_end_clean();
 
         if ($layoutName === null) {
-            return $viewResult;
+            return new HtmlResponse($viewResult);
         }
 
         $yield = function () use ($viewResult) {
@@ -30,7 +32,7 @@ class View
         $layoutResult = ob_get_contents();
         ob_end_clean();
 
-        return $layoutResult;
+        return new HtmlResponse($layoutResult);
     }
 
     public static function component(string $componentName, array $componentContext): string

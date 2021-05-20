@@ -71,7 +71,7 @@ final class Route
         }
         $result = Route::searchInRoutesArray($requestUri, $routes);
         $content = $result["callback"]($result["parameters"]);
-        echo DebugHandler::getInstance()->injectDebugBar($content);
+        $content->apply();
     }
 
     /**
