@@ -13,7 +13,7 @@ class RequestException extends Exception
         $this->errorMessage = $errorMessage;
         $this->httpStatusCode = $httpStatusCode;
         $this->hideInProduction = $hideInProduction;
-        $this->view = empty($view) ? "Except/$httpStatusCode.php" : $view;
+        $this->view = empty($view) ? "Except/$httpStatusCode" : $view;
     }
 
     public function getErrorMessage(): string

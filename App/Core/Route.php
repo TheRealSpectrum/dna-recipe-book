@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Core;
 
+use \Throwable;
 use \App\Core\DebugHandler;
+use \App\Core\Exception\RequestException;
+use \App\Core\Response\ExceptionResponse;
 
 /**
  * Pure static class used for routing.
@@ -62,15 +65,24 @@ final class Route
      */
     public static function run(array $routes): void
     {
-        $requestUri = explode("/", $_SERVER['REQUEST_URI']);
-        while (!empty($requestUri) && $requestUri[0] === "") {
-            $requestUri = array_slice($requestUri, 1);
+        $content = null;
+        try {
+            $requestUri = explode("/", $_SERVER['REQUEST_URI']);
+            while (!empty($requestUri) && $requestUri[0] === "") {
+                $requestUri = array_slice($requestUri, 1);
+            }
+            while (!empty($requestUri) && $requestUri[count($requestUri) - 1] === "") {
+                $requestUri = array_slice($requestUri, 0, count($requestUri) - 1);
+            }
+            $result = Route::searchInRoutesArray($requestUri, $routes);
+            $content = $result["callback"]($result["parameters"]);
+        } catch (RequestException $error) {
+            $content = new ExceptionResponse($error);
+        } catch (Throwable $error) {
+            $content = new ExceptionResponse(
+                new RequestException($error->getMessage())
+            );
         }
-        while (!empty($requestUri) && $requestUri[count($requestUri) - 1] === "") {
-            $requestUri = array_slice($requestUri, 0, count($requestUri) - 1);
-        }
-        $result = Route::searchInRoutesArray($requestUri, $routes);
-        $content = $result["callback"]($result["parameters"]);
         $content->apply();
     }
 

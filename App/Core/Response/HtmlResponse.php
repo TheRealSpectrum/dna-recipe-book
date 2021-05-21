@@ -24,5 +24,5 @@ class HtmlResponse extends Response
         echo DebugHandler::getInstance()->injectDebugBar($this->content);
     }
 
-    private string $content;
+    public string $content;
 }
