@@ -11,6 +11,7 @@ spl_autoload_register(
     }
 );
 
+session_start();
 DebugHandler::getInstance()->startup();
 
 Database::getInstance()->connect();
