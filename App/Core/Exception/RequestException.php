@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Core\Exception;
 
 use \Exception;
-use \App\Core\View;
-use \App\Core\Response\HtmlResponse;
 
-class RequestException extends \Exception
+class RequestException extends Exception
 {
     public function __construct(string $errorMessage, int $httpStatusCode = 500, bool $hideInProduction = true, string $view = "")
     {
@@ -18,26 +16,24 @@ class RequestException extends \Exception
         $this->view = empty($view) ? "Except/$httpStatusCode.php" : $view;
     }
 
-    public function getHtml(): HtmlResponse
+    public function getErrorMessage(): string
     {
-        $hideMessage = false;
-        if ($this->hideInProduction) {
-            $mode = getenv("APP_MODE");
-            if ($mode === false) {
-                $mode = "PRODUCTION";
-            }
+        return $this->errorMessage;
+    }
 
-            $mode = strtoupper($mode);
+    public function getHttpStatusCode(): int
+    {
+        return $this->httpStatusCode;
+    }
 
-            if ($mode !== "DEVELOPMENT") {
-                $hideMessage = true;
-            }
-        }
+    public function getHideInProduction(): bool
+    {
+        return $this->hideInProduction;
+    }
 
-        return View::view($this->view, [
-            "httpStatusCode" => $this->httpStatusCode,
-            "message" => $hideMessage ? "" : $this->errorMessage,
-        ]);
+    public function getView(): string
+    {
+        return $this->view;
     }
 
     private string $errorMessage;
