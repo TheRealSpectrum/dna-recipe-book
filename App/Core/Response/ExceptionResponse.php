@@ -34,6 +34,7 @@ final class ExceptionResponse extends Response
             "message" => $hideMessage ? "" : $this->exception->getErrorMessage(),
         ]);
 
+        http_response_code($this->exception->getHttpStatusCode());
         $response->apply();
     }
 
