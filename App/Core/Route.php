@@ -75,6 +75,9 @@ final class Route
                 $requestUri = array_slice($requestUri, 0, count($requestUri) - 1);
             }
             $result = Route::searchInRoutesArray($requestUri, $routes);
+            if ($result === null) {
+                throw new RequestException("No matching route", 404);
+            }
             $content = $result["callback"]($result["parameters"]);
         } catch (RequestException $error) {
             $content = new ExceptionResponse($error);
