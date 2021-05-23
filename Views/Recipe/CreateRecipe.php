@@ -17,19 +17,29 @@
               </label>
               <textarea class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 mb-3 leading-tight text-sm focus:outline-none focus:bg-white" name="recipe_description"></textarea>
             </div>
-            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
               <label class="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2" for="recipe_servings">
                     Servings
               </label>
               <input class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 mb-3 leading-tight text-sm focus:outline-none focus:bg-white" name="recipe_servings" type="text">
             </div>
-            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <label class="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2" for="recipe_servings">
+                    Category
+              </label>
+              <select class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 mb-3 leading-tight text-sm focus:outline-none focus:bg-white" name="recipe_servings">
+              <option value="placeholder1">placeholder1</option>
+              <option value="placeholder2">placeholder2</option>
+              <option value="placeholder3">placeholder3</option>
+              </select>
+            </div>
+            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
               <label class="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2" for="recipe_prep_time">
                     Preparation Time
               </label>
               <input class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 mb-3 leading-tight text-sm focus:outline-none focus:bg-white" name="recipe_prep_time" type="text">
             </div>
-            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
               <label class="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2" for="recipe_cooking_time">
                     Cooking Time
               </label>
