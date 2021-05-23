@@ -10,6 +10,8 @@ use \App\Core\Route;
 
 
 Route::run([
+    Route::get("/", [Home::class, "home"]),
+
     Route::resource("/recipes", RecipeController::class),
 
     Route::get("/login", [AuthController::class, "login"]),
