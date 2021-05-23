@@ -9,7 +9,7 @@ class Home extends Controller
 {
     function home()
     {
-        return View::view("Layout");
+        return View::view("Home");
     }
 
     function test($a)
