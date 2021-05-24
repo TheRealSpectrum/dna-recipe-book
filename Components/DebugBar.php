@@ -64,7 +64,7 @@ use App\Core\View;
 
     .debug-bar .labels div {
         padding: 5px;
-        font-size: 1.2rem;
+        font-size: 1.05rem;
         text-transform: uppercase;
         cursor: pointer;
         color: hsl(180, 30%, 22%);
