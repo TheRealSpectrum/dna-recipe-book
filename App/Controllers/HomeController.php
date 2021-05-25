@@ -5,7 +5,7 @@ namespace App\Controllers;
 use \App\Core\Controller;
 use \App\Core\View;
 
-class Home extends Controller
+class HomeController extends Controller
 {
     function home()
     {
