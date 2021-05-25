@@ -10,11 +10,11 @@ class RecipeController extends Controller
 {
     function index()
     {
-        return View::view("Recipe/Index");
+        return View::view("Recipe/Index", [], "Main");
     }
     function create()
     {
-        return View::view("Recipe/CreateRecipe");
+        return View::view("Recipe/CreateRecipe", [], "Main");
     }
     function store()
     {
@@ -22,11 +22,11 @@ class RecipeController extends Controller
     }
     function show()
     {
-        return View::view("Recipe/ShowRecipe");
+        return View::view("Recipe/ShowRecipe", [], "Main");
     }
     function edit()
     {
-        return View::view("Recipe/EditRecipe");
+        return View::view("Recipe/EditRecipe", [], "Main");
     }
     function update()
     {
@@ -34,6 +34,6 @@ class RecipeController extends Controller
     }
     function destroy()
     {
-        return View::view("Recipe/DeleteRecipe");
+        return View::view("Recipe/DeleteRecipe", [], "Main");
     }
 }

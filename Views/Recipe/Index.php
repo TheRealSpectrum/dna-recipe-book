@@ -1,4 +1,4 @@
-<?php include("../dna-recipe-book/Views/Layout/Header.php")?>
+<!-- Parts of code are copyrighted 2020 Mert Cukuren. Code released under the MIT license. See ThirdParty/Licenses/Tailblocks -->
 
 <!-- Content -->
 <section class="text-gray-400 body-font bg-gray-900">
@@ -46,6 +46,3 @@
     </div>
   </div>
 </section>
-
-<?php include("../dna-recipe-book/Views/Layout/Footer.php")?>
-
