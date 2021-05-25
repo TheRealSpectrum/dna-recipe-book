@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Core;
 
 use \App\Core\DebugHandler;
+use \App\Core\Environment;
 
 final class Database
 {
@@ -25,22 +26,10 @@ final class Database
             DebugHandler::getInstance()->logMessage("WARNING", "database object already exists");
         }
 
-        $host = getenv("DB_HOST");
-        $user = getenv("DB_USER");
-        $password = getenv("DB_PASSWORD");
-        $database = getenv("DB_DATABASE");
-
-        if ($host === false) {
-            $host = "localhost";
-        }
-
-        if ($user === false) {
-            $user = "root";
-        }
-
-        if ($password === false) {
-            $password = "";
-        }
+        $host = Environment::getInstance()->getEnvironment("DB_HOST", "localhost");
+        $user = Environment::getInstance()->getEnvironment("DB_USER", "root");
+        $password = Environment::getInstance()->getEnvironment("DB_PASSWORD", "");
+        $database = Environment::getInstance()->getEnvironment("DB_DATABASE");
 
         if ($database === false) {
             DebugHandler::getInstance()->logMessage("WARNING", "No database provided in environment.");
