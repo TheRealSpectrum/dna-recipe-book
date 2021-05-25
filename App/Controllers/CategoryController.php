@@ -10,11 +10,11 @@ class CategoryController extends Controller
 {
     function index()
     {
-        return View::view("Category/Index");
+        return View::view("Category/Index", [], "Main");
     }
     function create()
     {
-        return View::view("Category/CreateCategory");
+        return View::view("Category/CreateCategory", [], "Main");
     }
     function store()
     {
@@ -22,11 +22,11 @@ class CategoryController extends Controller
     }
     function show()
     {
-        return View::view("Category/ShowCategory");
+        return View::view("Category/ShowCategory", [], "Main");
     }
     function edit()
     {
-        return View::view("Category/EditCategory");
+        return View::view("Category/EditCategory", [], "Main");
     }
     function update()
     {

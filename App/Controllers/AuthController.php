@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 
 namespace App\Controllers;
@@ -6,12 +6,14 @@ namespace App\Controllers;
 use \App\Core\Controller;
 use \App\Core\View;
 
-class AuthController extends Controller 
+class AuthController extends Controller
 {
-    function login() {
-        return View::view("Auth/Login");
+    function login()
+    {
+        return View::view("Auth/Login", [], "Main");
     }
-    function logout() {
-        return View::view("Auth/Logout");
+    function logout()
+    {
+        return View::view("Auth/Logout", [], "Main");
     }
 }

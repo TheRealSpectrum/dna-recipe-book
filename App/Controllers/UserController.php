@@ -10,11 +10,11 @@ class UserController extends Controller
 {
     function index()
     {
-        return View::view("User/Index");
+        return View::view("User/Index", [], "Main");
     }
     function create()
     {
-        return View::view("User/CreateUser");
+        return View::view("User/CreateUser", [], "Main");
     }
     function store()
     {
@@ -22,11 +22,11 @@ class UserController extends Controller
     }
     function show()
     {
-        return View::view("User/ShowUser");
+        return View::view("User/ShowUser", [], "Main");
     }
     function edit()
     {
-        return View::view("User/EditUser");
+        return View::view("User/EditUser", [], "Main");
     }
     function update()
     {
@@ -34,6 +34,6 @@ class UserController extends Controller
     }
     function destroy()
     {
-        return View::view("User/DeleteUser");
+        return View::view("User/DeleteUser", [], "Main");
     }
 }

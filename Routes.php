@@ -2,7 +2,7 @@
 
 use App\Controllers\AuthController;
 use App\Controllers\CategoryController;
-use \App\Controllers\Home;
+use \App\Controllers\HomeController;
 use \App\Controllers\RecipeController;
 use App\Controllers\UserController;
 use \App\Core\Route;
@@ -10,7 +10,7 @@ use \App\Core\Route;
 
 
 Route::run([
-    Route::get("/", [Home::class, "home"]),
+    Route::get("/", [HomeController::class, "home"]),
 
     Route::resource("/recipes", RecipeController::class),
 
