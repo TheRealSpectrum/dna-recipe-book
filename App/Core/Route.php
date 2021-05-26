@@ -6,6 +6,7 @@ namespace App\Core;
 
 use \Throwable;
 use \App\Core\DebugHandler;
+use \App\Core\Request;
 use \App\Core\Exception\RequestException;
 use \App\Core\Response\ExceptionResponse;
 
@@ -43,8 +44,8 @@ final class Route
 
     public static function resource(string $uri, string $controller)
     {
-        return function (array $requestUri) use ($uri, $controller) {
-            return Route::searchInRoutesArray($requestUri, [
+        return function (Request $request) use ($uri, $controller) {
+            return Route::searchInRoutesArray($request, [
                 Route::get($uri, [$controller, "index"]),
                 Route::get("$uri/create", [$controller, "create"]),
                 Route::post($uri, [$controller, "store"]),
@@ -65,6 +66,7 @@ final class Route
      */
     public static function run(array $routes): void
     {
+        $request = new Request($_SERVER["REQUEST_URI"]);
         $content = null;
         try {
             $requestUri = explode("/", $_SERVER['REQUEST_URI']);
@@ -74,17 +76,19 @@ final class Route
             while (!empty($requestUri) && $requestUri[count($requestUri) - 1] === "") {
                 $requestUri = array_slice($requestUri, 0, count($requestUri) - 1);
             }
-            $result = Route::searchInRoutesArray($requestUri, $routes);
+            $result = Route::searchInRoutesArray($request, $routes);
             if ($result === null) {
                 throw new RequestException("No matching route", 404);
             }
-            $content = $result["callback"]($result["parameters"]);
+            $content = $result["callback"]($result["parameters"], $request);
         } catch (RequestException $error) {
             $content = new ExceptionResponse($error);
+            DebugHandler::getInstance()->logMessage("ERROR", $error->getMessage(), $error->getFile(), $error->getLine());
         } catch (Throwable $error) {
             $content = new ExceptionResponse(
                 new RequestException($error->getMessage())
             );
+            DebugHandler::getInstance()->logMessage("ERROR", $error->getMessage(), $error->getFile(), $error->getLine());
         }
         $content->apply();
     }
@@ -98,10 +102,10 @@ final class Route
         Route::run($routes);
     }
 
-    private static function searchInRoutesArray(array $requestUri, array $routes): ?array
+    private static function searchInRoutesArray(Request $request, array $routes): ?array
     {
         foreach ($routes as $route) {
-            $result = $route($requestUri);
+            $result = $route($request);
             if ($result !== null) {
                 return $result;
             }
@@ -120,11 +124,18 @@ final class Route
             $desiredUri = array_slice($desiredUri, 0, count($desiredUri) - 1);
         }
 
-        return function ($requestUri) use ($desiredUri, $callback, $method) {
-            if ($method !== $_SERVER["REQUEST_METHOD"]) {
+        return function (Request $requestUri) use ($desiredUri, $callback, $method) {
+            if (
+                $method !== $_SERVER["REQUEST_METHOD"]
+                && ($_SERVER["REQUEST_METHOD"] !== "POST"
+                    || $requestUri->getParameter("_method") !== $method)
+            ) {
                 return null;
             }
-            if (count($desiredUri) !== count($requestUri)) {
+
+            $compareResult = $requestUri->compare($desiredUri);
+
+            if ($compareResult === null) {
                 return null;
             }
 
@@ -135,25 +146,10 @@ final class Route
                 $routeCallback = $controllerInstance->defineControlledRoute($callback[1]);
             }
 
-            $result = [
-                "parameters" => [],
+            return [
+                "parameters" => $compareResult,
                 "callback" => $routeCallback,
             ];
-
-            foreach ($requestUri as $index => $value) {
-                if ($value === $desiredUri[$index]) {
-                    continue;
-                }
-
-                if ($desiredUri[$index][0] === ":") {
-                    $result["parameters"][substr($desiredUri[$index], 1)] = $value;
-                    continue;
-                }
-
-                return null;
-            }
-
-            return $result;
         };
     }
 }

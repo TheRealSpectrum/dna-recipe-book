@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Core;
 
 use App\Core\DebugHandler;
+use \App\Core\Request;
 use \ReflectionClass;
 
 /**
@@ -24,7 +25,7 @@ abstract class Controller
      */
     final public function defineControlledRoute(string $name): callable
     {
-        return function ($parameters) use ($name) {
+        return function ($parameters, Request $request) use ($name) {
             $reflectionClass = new ReflectionClass($this);
             $reflection = $reflectionClass->getMethod($name);
             $desiredParameters = $reflection->getParameters();
@@ -32,6 +33,10 @@ abstract class Controller
             $arguments = [];
 
             foreach ($desiredParameters as $parameter) {
+                if ($parameter->getName() === "request") {
+                    array_push($arguments, $request);
+                    continue;
+                }
                 array_push(
                     $arguments,
                     isset($parameters[$parameter->getName()]) ? $parameters[$parameter->getName()] : null
