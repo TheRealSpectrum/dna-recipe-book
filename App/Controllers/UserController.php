@@ -6,11 +6,15 @@ namespace App\Controllers;
 use \App\Core\Controller;
 use \App\Core\View;
 
+use \App\Models\User;
+
 class UserController extends Controller
 {
     function index()
     {
-        return View::view("User/Index", [], "Main");
+        return View::view("User/Index", [
+            "users" => User::query("SELECT * FROM `users`"),
+        ], "Main");
     }
     function create()
     {
