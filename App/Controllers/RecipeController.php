@@ -5,12 +5,20 @@ namespace App\Controllers;
 
 use \App\Core\Controller;
 use \App\Core\View;
+use \App\Models\Recipe;
 
 class RecipeController extends Controller
 {
     function index()
     {
-        return View::view("Recipe/Index", [], "Main");
+        return View::view(
+            "Recipe/Index",
+            [
+                "recipes" =>
+                Recipe::query("SELECT * FROM `recipes`")
+            ],
+            "Main"
+        );
     }
     function create()
     {

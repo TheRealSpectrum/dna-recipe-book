@@ -1,10 +1,12 @@
 <?php
 
+namespace App\Models;
+
 use App\Core\Model;
 
 final class Recipe extends Model 
 {
-    protected array $columns = ["id", "title", "description", "author_id", "preparation_time", "cooking_time", "servings", "image"]; 
+    protected array $columns = ["id", "title", "description", "author_id", "preparation_time", "cooking_time", "num_servings", "image"]; 
     protected string $table = "recipes";
 
 
