@@ -11,11 +11,9 @@ use \App\Core\View;
         <div class="flex flex-wrap w-full mb-20 flex-col gap-3">
             <!-- User -->
             <?php
-            for ($i = 0; $i < 10; ++$i) {
+            foreach ($users as $user) {
                 echo View::component("User/IndexRow", [
-                    "id" => $i,
-                    "name" => "User $i",
-                    "isAdmin" => $i % 2 === 0
+                    "user" => $user
                 ]);
             }
             ?>
