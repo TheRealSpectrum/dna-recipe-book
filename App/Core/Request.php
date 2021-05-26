@@ -65,6 +65,11 @@ final class Request
         return $result;
     }
 
+    public function getParameter(string $key): ?string
+    {
+        return isset($this->parameters[$key]) ? $this->parameters[$key] : null;
+    }
+
     private array $path;
     private array $parameters;
 }
