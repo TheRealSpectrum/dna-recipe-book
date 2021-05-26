@@ -125,7 +125,11 @@ final class Route
         }
 
         return function (Request $requestUri) use ($desiredUri, $callback, $method) {
-            if ($method !== $_SERVER["REQUEST_METHOD"]) {
+            if (
+                $method !== $_SERVER["REQUEST_METHOD"]
+                && ($_SERVER["REQUEST_METHOD"] !== "POST"
+                    || $requestUri->getParameter("_method") !== $method)
+            ) {
                 return null;
             }
 

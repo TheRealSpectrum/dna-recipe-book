@@ -8,7 +8,7 @@
             <button type="submit" class="bg-green-700 p-1 m-1 rounded-lg text-gray-100">Edit</button>
         </form>
         <form action="/users/<?= $user->id ?>" method="post" class="col-span-1">
-            <input type="hidden" name="_method" value="delete">
+            <input type="hidden" name="_method" value="DELETE">
             <button type="submit" class="bg-red-700 p-1 m-1 rounded-lg text-gray-100">Delete</button>
         </form>
     </div>

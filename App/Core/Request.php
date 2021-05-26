@@ -29,6 +29,10 @@ final class Request
             }
             $this->parameters[$splitParameter[0]] = $splitParameter[1];
         }
+
+        foreach ($_POST as $key => $value) {
+            $this->parameters[$key] = $value;
+        }
     }
 
     public function __toString(): string
