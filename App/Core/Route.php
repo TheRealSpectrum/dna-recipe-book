@@ -80,7 +80,7 @@ final class Route
             if ($result === null) {
                 throw new RequestException("No matching route", 404);
             }
-            $content = $result["callback"]($result["parameters"]);
+            $content = $result["callback"]($result["parameters"], $request);
         } catch (RequestException $error) {
             $content = new ExceptionResponse($error);
             DebugHandler::getInstance()->logMessage("ERROR", $error->getMessage(), $error->getFile(), $error->getLine());

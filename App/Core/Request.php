@@ -31,6 +31,16 @@ final class Request
         }
     }
 
+    public function __toString(): string
+    {
+        $result = [
+            "path" => $this->path,
+            "parameters" => $this->parameters,
+        ];
+
+        return json_encode($result);
+    }
+
     public function compare($desiredPath): ?array
     {
         if (count($desiredPath) !== count($this->path)) {
