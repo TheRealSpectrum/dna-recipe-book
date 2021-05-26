@@ -1,1 +1,1 @@
-Test - EditUser
+<?= $user ?>
