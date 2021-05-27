@@ -124,6 +124,74 @@ final class RelationManager
         return $method->invoke(null, $query);
     }
 
+    public function loadRelationIntersect(Model $subject, string $intersectTable, string $referencedTable, string $selfId, string $selfKey, string $otherId, string $otherKey, callable $generator): array
+    {
+        if (!empty($this->batchSubjects)) {
+            $ids = [];
+
+            foreach ($this->batchSubjects as $batchSubject) {
+                array_push($ids, $batchSubject->$selfId);
+            }
+
+            $idList = implode(", ", $ids);
+
+            $batchIntersectQuery = "SELECT * FROM `$intersectTable` WHERE `$selfKey` IN ($idList)";
+
+            $batchIntersectResults = Database::getInstance()->query($batchIntersectQuery);
+
+            $keys = [];
+
+            foreach ($batchIntersectResults as $intersectResult) {
+                array_push($keys, $intersectResult[$otherKey]);
+            }
+
+            $keys = array_unique($keys);
+
+            $keyList = implode(", ", $keys);
+
+            $batchQuery = "SELECT * FROM `$referencedTable` WHERE `$otherId` IN ($keyList)";
+
+            $batchResults = Database::getInstance()->query($batchQuery);
+            $batchMap = [];
+
+            foreach ($batchResults as $batchResult) {
+                $model = $generator();
+                $model->fill($batchResult);
+                $batchMap[$batchResult->$otherId] = $model;
+            }
+
+            foreach ($batchIntersectResults as $intersectResult) {
+                if (!array_key_exists($intersectResult[$selfKey], $this->batchResults)) {
+                    $this->batchResults[$intersectResult[$selfKey]] = [];
+                }
+                array_push($this->batchResults[$intersectResult[$selfKey]], $batchMap[$intersectResult[$otherKey]]);
+            }
+
+            $this->batchSubject = [];
+        }
+
+        if (!empty($this->batchResults)) {
+            return $this->batchResults[$subject->$selfId];
+        }
+
+        $intersectQuery = "SELECT * FROM `$intersectTable` WHERE `$selfKey` = {$subject->$selfId}";
+        $intersectResults = Database::getInstance()->query($intersectQuery);
+
+        $keys = [];
+
+        foreach ($intersectResults as $intersectResult) {
+            array_push($keys, $intersectResult[$otherKey]);
+        }
+
+        $keyList = implode(", ", $keys);
+
+        $query = "SELECT * FROM `$referencedTable` WHERE `$otherId` in ($keyList)";
+
+        $class = new \ReflectionClass($generator());
+        $method = $class->getMethod("query");
+        return $method->invoke(null, $query);
+    }
+
     public function batchLoad(array $subjects, string $relation): void
     {
         $this->batchSubjects = $subjects;
