@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-use \App\Core\View;
-
 ?>
 
 <!-- Parts of code are copyrighted 2020 Mert Cukuren. Code released under the MIT license. See ThirdParty/Licenses/Tailblocks -->
 <!-- Content -->
 <section class="flex-grow text-gray-400 body-font bg-gray-900">
+    <a href="/recipes">
+        <p class="container px-5 pt-5 text-xl mx-auto">Back to recipes without saving</p>
+    </a>
   <form class="mx-auto w-full max-w-lg my-4" method="POST" action="/recipes/<?= $recipe->id ?>">
   <input type="hidden" name="_method" value="PATCH">
     <div class="flex flex-wrap -mx-3 mb-6">
@@ -31,7 +32,7 @@ use \App\Core\View;
         </label>
         <select class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 mb-3 leading-tight text-sm focus:outline-none focus:bg-white" name="recipe_author" type="text">
           <?php foreach ($authors as $author) {
-            echo '<option value="' . $author->id . '">' . $author->name . '</option>';
+            echo '<option value="' . $author->id . "\" " . ($author->id === $recipe->author_id ? "selected" : "") .  '>' . $author->name . '</option>';
           };
           ?>
         </select>
@@ -48,7 +49,7 @@ use \App\Core\View;
         </label>
         <select class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 mb-3 leading-tight text-sm focus:outline-none focus:bg-white" name="recipe_categories" multiple>
           <?php foreach ($categories as $category) {
-            echo '<option value="' . $category->id . '">' . $category->title . '</option>';
+            echo '<option value="' . $category->id . '" ' .  (in_array($category->id, $recipe_categories) ? "selected" : "") .  '>' . $category->title . '</option>';
           };
           ?>
         </select>
@@ -89,9 +90,26 @@ use \App\Core\View;
       </div>
       <div class="px-4 py-3  text-right">
         <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-          Create Recipe
+          Edit Recipe
         </button>
       </div>
     </div>
+  </form>
+  <form class="mx-auto w-full max-w-lg my-4" method="POST" action="/ingredients">
+  <div class="flex flex-wrap -mx-3 mb-6">
+  <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+    <label for="ingredient_title">Ingredient title</label>
+    <input class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 mb-3 leading-tight text-sm focus:outline-none focus:bg-white" type="text" name="ingredient_title">
+    </div>
+  <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+    <label for="ingredient_title">Ingredient Quantity</label>
+    <input class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 mb-3 leading-tight text-sm focus:outline-none focus:bg-white" type="text" name="ingredient_quantity">
+    </div>
+    <div class="px-4 py-3  text-right">
+        <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+          Add ingredient
+        </button>
+      </div>
+  </div>
   </form>
 </section>

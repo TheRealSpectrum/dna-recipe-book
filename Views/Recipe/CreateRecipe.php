@@ -2,6 +2,9 @@
 
 <!-- Content -->
 <section class="flex-grow text-gray-400 body-font bg-gray-900">
+    <a href="/recipes">
+        <p class="container px-5 pt-5 text-xl mx-auto">Back to recipes without saving</p>
+    </a>
   <form class="mx-auto w-full max-w-lg my-4" method="POST" action="/recipes">
     <div class="flex flex-wrap -mx-3 mb-6">
       <div class="w-full md:w-100 px-3 mb-6 md:mb-0">
