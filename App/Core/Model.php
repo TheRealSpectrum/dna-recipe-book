@@ -168,13 +168,22 @@ abstract class Model
         return $this->$property;
     }
 
+    final protected function relationIntersect(string $property, string $intersectTable, string $referencedTable, string $selfId, string $selfKey, string $otherId, string $otherKey, callable $generator): array
+    {
+        if ($this->$property === null) {
+            $this->$property = RelationManager::getInstance()->loadRelationIntersect($this, $intersectTable, $referencedTable, $selfId, $selfKey, $otherId, $otherKey, $generator);
+        }
+
+        return $this->$property;
+    }
+
     protected array $columns = [];
     protected string $table = "";
     protected string $idColumn = "id";
 
     private bool $new = true;
 
-    final private function fill(array $values): void
+    final public function fill(array $values): void
     {
         foreach ($values as $key => $value) {
             if (!in_array($key, $this->columns)) {
