@@ -4,8 +4,12 @@
 namespace App\Controllers;
 
 use \App\Core\Controller;
+use \App\Core\Request;
+use \App\Core\Response\RedirectResponse;
 use \App\Core\View;
 use \App\Models\Recipe;
+use \App\Models\User;
+use \App\Models\Category;
 
 class RecipeController extends Controller
 {
@@ -21,11 +25,26 @@ class RecipeController extends Controller
     }
     function create()
     {
-        return View::view("Recipe/CreateRecipe", [], "Main");
+        return View::view("Recipe/CreateRecipe", [
+            "authors" => User::query("SELECT * FROM `users`"),
+            "categories" => Category::query("SELECT * FROM `categories`"),
+        ], "Main");
     }
-    function store()
+    function store(Request $request)
     {
-        // return View::view("Recipes");
+        $newRecipe = Recipe::create([
+            "title" => $request->getParameter("recipe_title"),
+            "description" => $request->getParameter("recipe_description"),
+            "numServings" => $request->getParameter("recipe_servings"),
+            "categories" => $request->getParameter("recipe_categories"),
+            "preparationTime" => $request->getParameter("recipe_servings"),
+            "cookingTime" => $request->getParameter("recipe_cooking_time"),
+            "author" => $request->getParameter("recipe_author"),
+        ]);
+
+        $newRecipe->store();
+
+        return new RedirectResponse("/recipes");
     }
     function show($id)
     {

@@ -2,7 +2,7 @@
 
 <!-- Content -->
 <section class="flex-grow text-gray-400 body-font bg-gray-900">
-  <form class="mx-auto w-full max-w-lg my-4">
+  <form class="mx-auto w-full max-w-lg my-4" method="POST">
     <div class="flex flex-wrap -mx-3 mb-6">
       <div class="w-full md:w-100 px-3 mb-6 md:mb-0">
         <label class="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2" for="recipe_title">
@@ -17,6 +17,17 @@
         </label>
         <textarea class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 mb-3 leading-tight text-sm focus:outline-none focus:bg-white" name="recipe_description"></textarea>
       </div>
+      <div class="w-full md:w-100 px-3 mb-6 md:mb-0">
+        <label class="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2" for="recipe_author">
+          Author
+        </label>
+        <select class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 mb-3 leading-tight text-sm focus:outline-none focus:bg-white" name="recipe_author" type="text">
+          <?php foreach($authors as $author) {
+            echo '<option value="' . $author->id . '">' . $author->name . '</option>';
+          };
+          ?>
+        </select>
+      </div>
       <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
         <label class="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2" for="recipe_servings">
           Servings
@@ -25,9 +36,9 @@
       </div>
       <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
         <label class="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2" for="recipe_servings">
-          Category
+          Categories
         </label>
-        <select class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 mb-3 leading-tight text-sm focus:outline-none focus:bg-white" name="recipe_servings">
+        <select class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 mb-3 leading-tight text-sm focus:outline-none focus:bg-white" name="recipe_categories" multiple>
           <option value="placeholder1">placeholder1</option>
           <option value="placeholder2">placeholder2</option>
           <option value="placeholder3">placeholder3</option>
@@ -66,18 +77,6 @@
             </p>
           </div>
         </div>
-      </div>
-      <div class="w-full md:w-100 px-3 mb-6 md:mb-0">
-        <label class="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2" for="recipe_description">
-          Ingredients
-        </label>
-        <textarea class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 mb-3 leading-tight focus:outline-none focus:bg-white text-sm" name="recipe_description" rows="4"></textarea>
-      </div>
-      <div class="w-full md:w-100 px-3 mb-6 md:mb-0">
-        <label class="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2" for="recipe_description">
-          Directions
-        </label>
-        <textarea class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 mb-3 leading-tight focus:outline-none focus:bg-white text-sm" name="recipe_description" rows="8"></textarea>
       </div>
       <div class="px-4 py-3  text-right">
         <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
