@@ -24,8 +24,8 @@ class UserController extends Controller
     {
         return View::view("User/CreateUser", [], "Main");
     }
-    function store(Request $request)
 
+    function store(Request $request)
     {
         $newUser = User::create([
             "name" => $request->getParameter("name"),
@@ -64,7 +64,7 @@ class UserController extends Controller
             $toEdit->name = $name;
         }
 
-        if ($password !== null) {
+        if ($password !== null && !empty($password)) {
             $toEdit->password = password_hash($password, PASSWORD_BCRYPT);
         }
 
