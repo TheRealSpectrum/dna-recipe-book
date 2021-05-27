@@ -30,13 +30,13 @@ use \App\Core\View;
         </div>
     </div>
     <h2 class="container px-5 pt-5 text-3xl mx-auto">Recipes</h2>
-    <div class="container px-5 pt-5 pb-24 mx-auto">
+    <div class="container px-5 pt-5 pb-24 mx-auto flex flex-col gap-3">
         <?php
-        // foreach ($category->recipes() as $recipe) {
-        //     echo View::component("User/ShowRecipe", [
-        //         "recipe" => $recipe,
-        //     ]);
-        // }
+        foreach ($category->recipes() as $recipe) {
+            echo View::component("User/ShowRecipe", [
+                "recipe" => $recipe,
+            ]);
+        }
         ?>
     </div>
 </section>
