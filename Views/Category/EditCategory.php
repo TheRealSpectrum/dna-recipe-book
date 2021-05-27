@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 ?>
 
-<section class="text-gray-400 body-font bg-gray-900">
+<section class="text-gray-400 body-font bg-gray-900 min-h-full">
     <a href="/categories">
         <p class="container px-5 pt-5 text-xl mx-auto">Back to categories without saving</p>
     </a>

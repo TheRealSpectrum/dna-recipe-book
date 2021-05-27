@@ -6,7 +6,7 @@ use \App\Core\View;
 
 ?>
 
-<section class="text-gray-400 body-font bg-gray-900">
+<section class="text-gray-400 body-font bg-gray-900 min-h-full">
     <a href="/users">
         <p class="container px-5 pt-5 text-xl mx-auto">Back to users</p>
     </a>
