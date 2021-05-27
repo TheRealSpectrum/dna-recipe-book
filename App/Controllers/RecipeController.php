@@ -37,10 +37,9 @@ class RecipeController extends Controller
             "title" => $request->getParameter("recipe_title"),
             "description" => $request->getParameter("recipe_description"),
             "num_servings" => $request->getParameter("recipe_servings"),
-            "categories" => $request->getParameter("recipe_categories"),
-            "preparationTime" => $request->getParameter("recipe_servings"),
-            "cookingTime" => $request->getParameter("recipe_cooking_time"),
-            "author" => $request->getParameter("recipe_author"),
+            "preparation_time" => $request->getParameter("recipe_servings"),
+            "cooking_time" => $request->getParameter("recipe_cooking_time"),
+            "author_id" => $request->getParameter("recipe_author"),
         ]);
 
         $newRecipe->store();

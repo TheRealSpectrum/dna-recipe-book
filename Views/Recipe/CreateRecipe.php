@@ -32,7 +32,7 @@
         <label class="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2" for="recipe_servings">
           Servings
         </label>
-        <input class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 mb-3 leading-tight text-sm focus:outline-none focus:bg-white" name="recipe_servings" type="text">
+        <input class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 mb-3 leading-tight text-sm focus:outline-none focus:bg-white" name="recipe_servings" type="number">
       </div>
       <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
         <label class="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2" for="recipe_servings">
@@ -49,13 +49,13 @@
         <label class="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2" for="recipe_prep_time">
           Preparation Time
         </label>
-        <input class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 mb-3 leading-tight text-sm focus:outline-none focus:bg-white" name="recipe_prep_time" type="text">
+        <input class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 mb-3 leading-tight text-sm focus:outline-none focus:bg-white" name="recipe_prep_time" type="number">
       </div>
       <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
         <label class="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2" for="recipe_cooking_time">
           Cooking Time
         </label>
-        <input class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 mb-3 leading-tight text-sm focus:outline-none focus:bg-white" name="recipe_cooking_time" type="text">
+        <input class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 mb-3 leading-tight text-sm focus:outline-none focus:bg-white" name="recipe_cooking_time" type="number">
       </div>
       <div class="w-full md:w-100 px-3 mb-6 md:mb-0">
         <label class="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2">
