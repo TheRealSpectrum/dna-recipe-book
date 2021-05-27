@@ -37,7 +37,7 @@ class RecipeController extends Controller
             "title" => $request->getParameter("recipe_title"),
             "description" => $request->getParameter("recipe_description"),
             "num_servings" => $request->getParameter("recipe_servings"),
-            "preparation_time" => $request->getParameter("recipe_servings"),
+            "preparation_time" => $request->getParameter("recipe_prep_time"),
             "cooking_time" => $request->getParameter("recipe_cooking_time"),
             "author_id" => $request->getParameter("recipe_author"),
         ]);
@@ -69,9 +69,40 @@ class RecipeController extends Controller
             "recipe_categories" => $recipe_categories,
         ], "Main");
     }
-    function update()
+    function update(Request $request, $id)
     {
-        // return View::view("Recipes");
+        $toEdit = Recipe::query("SELECT * FROM `recipes` WHERE `id` = $id LIMIT 1")[0];
+
+        $title = $request->getParameter("recipe_title");
+        $description = $request->getParameter("recipe_description");
+        $num_servings = $request->getParameter("recipe_servings");
+        $preparation_time = $request->getParameter("recipe_prep_time");
+        $cooking_time = $request->getParameter("recipe_cooking_time");
+        $author_id = $request->getParameter("recipe_author");
+
+        if ($title !== null) {
+            $toEdit->title = $title;
+        }
+        if ($description !== null) {
+            $toEdit->description = $description;
+        }
+        if ($num_servings !== null) {
+            $toEdit->num_servings = (int)$num_servings;
+        }
+        if ($preparation_time !== null) {
+            $toEdit->preparation_time = (int)$preparation_time;
+        }
+        if ($cooking_time !== null) {
+            $toEdit->cooking_time = (int)$cooking_time;
+        }
+        if ($title !== null) {
+            $toEdit->author_id = (int)$author_id;
+        }
+
+
+        $toEdit->store();
+
+        return new RedirectResponse("/recipes/{$toEdit->id}");
     }
     function destroy()
     {

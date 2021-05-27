@@ -76,6 +76,9 @@ abstract class Model
                 if (property_exists($this, $column)) {
                     $value = "";
                     switch (gettype($this->$column)) {
+                        case "NULL":
+                            $value = "NULL";
+                            break;
                         case "string":
                             $value = "\"{$this->$column}\"";
                             break;
@@ -102,6 +105,9 @@ abstract class Model
                 if (property_exists($this, $column) && $column !== $this->idColumn) {
                     $value = "";
                     switch (gettype($this->$column)) {
+                        case "NULL":
+                            $value = "NULL";
+                            break;
                         case "string":
                             $value = "\"{$this->$column}\"";
                             break;
