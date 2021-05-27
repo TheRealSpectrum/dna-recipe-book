@@ -7,6 +7,9 @@ use App\Core\View;
 
 <!-- Content -->
 <section class="text-gray-400 bg-gray-900 body-font">
+    <a href="/recipes/create">
+        <p class="container px-5 pt-5 text-xl mx-auto">Create new recipe</p>
+    </a>
   <div class="container px-5 py-24 mx-auto">
     <div class="flex flex-wrap -m-4">
       <?php foreach($recipes as $recipe) {

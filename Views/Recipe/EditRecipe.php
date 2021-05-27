@@ -7,6 +7,9 @@ declare(strict_types=1);
 <!-- Parts of code are copyrighted 2020 Mert Cukuren. Code released under the MIT license. See ThirdParty/Licenses/Tailblocks -->
 <!-- Content -->
 <section class="flex-grow text-gray-400 body-font bg-gray-900">
+    <a href="/recipes">
+        <p class="container px-5 pt-5 text-xl mx-auto">Back to recipes without saving</p>
+    </a>
   <form class="mx-auto w-full max-w-lg my-4" method="POST" action="/recipes/<?= $recipe->id ?>">
   <input type="hidden" name="_method" value="PATCH">
     <div class="flex flex-wrap -mx-3 mb-6">
@@ -87,7 +90,7 @@ declare(strict_types=1);
       </div>
       <div class="px-4 py-3  text-right">
         <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-          Create Recipe
+          Edit Recipe
         </button>
       </div>
     </div>
