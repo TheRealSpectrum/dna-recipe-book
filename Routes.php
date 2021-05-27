@@ -3,6 +3,7 @@
 use App\Controllers\AuthController;
 use App\Controllers\CategoryController;
 use \App\Controllers\HomeController;
+use App\Controllers\IngredientController;
 use \App\Controllers\RecipeController;
 use App\Controllers\UserController;
 use \App\Core\Route;
@@ -20,5 +21,8 @@ Route::run([
     Route::resource("/users", UserController::class),
 
     Route::resource("/categories", CategoryController::class),
+
+    Route::post("/ingredients", [IngredientController::class, "store"]),
+    Route::delete("/ingredients/:id", [IngredientController::class, "destroy"]),
 
 ]);
