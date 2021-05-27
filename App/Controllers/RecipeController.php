@@ -37,10 +37,9 @@ class RecipeController extends Controller
             "title" => $request->getParameter("recipe_title"),
             "description" => $request->getParameter("recipe_description"),
             "num_servings" => $request->getParameter("recipe_servings"),
-            "categories" => $request->getParameter("recipe_categories"),
-            "preparationTime" => $request->getParameter("recipe_servings"),
-            "cookingTime" => $request->getParameter("recipe_cooking_time"),
-            "author" => $request->getParameter("recipe_author"),
+            "preparation_time" => $request->getParameter("recipe_servings"),
+            "cooking_time" => $request->getParameter("recipe_cooking_time"),
+            "author_id" => $request->getParameter("recipe_author"),
         ]);
 
         $newRecipe->store();
@@ -57,9 +56,13 @@ class RecipeController extends Controller
             "Main"
         );
     }
-    function edit()
+    function edit($id)
     {
-        return View::view("Recipe/EditRecipe", [], "Main");
+        return View::view("Recipe/EditRecipe", [
+            "recipe" => Recipe::query("SELECT * FROM `recipes` WHERE `id` = $id LIMIT 1")[0],
+            "authors" => User::query("SELECT * FROM `users`"),
+            "categories" => Category::query("SELECT * FROM `categories`"),
+        ], "Main");
     }
     function update()
     {
