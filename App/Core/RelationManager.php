@@ -47,8 +47,10 @@ final class RelationManager
             return $result;
         }
 
-        $query = "SELECT * FROM `$referencedTable` WHERE `$id` IS {$subject->$key} LIMIT 1";
-        return Database::getInstance()->getModels($query, $generator)[0];
+        $query = "SELECT * FROM `$referencedTable` WHERE `$id` = {$subject->$key} LIMIT 1";
+        $class = new \ReflectionClass($generator());
+        $method = $class->getMethod("query");
+        return $method->invoke(null, $query)[0];
     }
 
     public function loadRelationOne(Model $subject, string $referenceTable, string $id, string $key, callable $generator): Model
@@ -64,7 +66,7 @@ final class RelationManager
 
             $batchQuery = "SELECT * FROM `$referenceTable` WHERE `$key` IN ($idList)";
 
-            $batchResults = Database::getInstance()->getRaw($batchQuery);
+            $batchResults = Database::getInstance()->query($batchQuery);
 
             foreach ($batchResults as $batchResult) {
                 $this->batchResults[$batchResult[$key]] = $batchResult;
@@ -79,8 +81,10 @@ final class RelationManager
             return $result;
         }
 
-        $query = "SELECT * FROM `$referenceTable` WHERE `$key` IS {$subject->$id} LIMIT 1";
-        return Database::getInstance()->getModels($query, $generator)[0];
+        $query = "SELECT * FROM `$referenceTable` WHERE `$key` = {$subject->$id} LIMIT 1";
+        $class = new \ReflectionClass($generator());
+        $method = $class->getMethod("query");
+        return $method->invoke(null, $query)[0];
     }
 
     public function loadRelationMany(Model $subject, string $referenceTable, string $id, string $key, callable $generator): array
@@ -96,7 +100,7 @@ final class RelationManager
 
             $batchQuery = "SELECT * FROM `$referenceTable` WHERE `$key` IN ($idList)";
 
-            $batchResults = Database::getInstance()->getRaw($batchQuery);
+            $batchResults = Database::getInstance()->query($batchQuery);
 
             foreach ($batchResults as $batchResult) {
                 if (!array_key_exists($batchResult[$key], $this->batchResults)) {
@@ -114,8 +118,10 @@ final class RelationManager
             return $this->batchResults[$subject->$key];
         }
 
-        $query = "SELECT * FROM `$referenceTable` WHERE `$key` IS {$subject->$id}";
-        return Database::getInstance()->getModels($query, $generator);
+        $query = "SELECT * FROM `$referenceTable` WHERE `$key` = {$subject->$id}";
+        $class = new \ReflectionClass($generator());
+        $method = $class->getMethod("query");
+        return $method->invoke(null, $query);
     }
 
     public function batchLoad(array $subjects, string $relation): void
