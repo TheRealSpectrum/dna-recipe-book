@@ -14,8 +14,7 @@ class RecipeController extends Controller
         return View::view(
             "Recipe/Index",
             [
-                "recipes" =>
-                Recipe::query("SELECT * FROM `recipes`")
+                "recipes" => Recipe::query("SELECT * FROM `recipes`")
             ],
             "Main"
         );
@@ -28,9 +27,15 @@ class RecipeController extends Controller
     {
         // return View::view("Recipes");
     }
-    function show()
+    function show($id)
     {
-        return View::view("Recipe/ShowRecipe", [], "Main");
+        return View::view(
+            "Recipe/ShowRecipe",
+            [
+                "recipe" => Recipe::query("SELECT * FROM `recipes` WHERE `id` = $id LIMIT 1")[0]
+            ],
+            "Main"
+        );
     }
     function edit()
     {
