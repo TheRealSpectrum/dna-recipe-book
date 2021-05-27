@@ -18,7 +18,12 @@ final class Recipe extends Model
 
     public function listCategoryAsLinks(): string
     {
-        return "categories here";
+        $results = [];
+        foreach ($this->categories() as $category) {
+            array_push($results, "<a href=\"/categories/{$category->id}\">{$category->title}</a>");
+        }
+
+        return implode(" - ", $results);
     }
 
     // Relation functions
