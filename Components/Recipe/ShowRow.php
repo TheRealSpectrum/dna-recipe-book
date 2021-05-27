@@ -11,6 +11,14 @@
                 <p class="text-base text-gray-200">Preparation time: <?= $preparationTime ?> Minutes</p>
                 <p class="text-base text-gray-200">Cooking time: <?= $cookingTime ?> Minutes</p>
                 <p class="text-base text-gray-200">Servings: <?= $numServings ?> Persons</p>
+                <ul class="font-medium title-font mt-4 mb-2 text-white text-2xl">Ingredients:
+                <?php foreach($ingredients as $ingredient) {
+                     echo '<li class="text-base text-gray-200">' . $ingredient->quantity . " " . $ingredient->name .  '</li>';
+                } 
+                ?>
+                </ul>
+                
+                
             </div>
         </div>
         <div class="sm:w-2/3 sm:pl-8 sm:py-8 sm:border-l border-gray-800 sm:border-t-0 border-t mt-4 pt-4 sm:mt-0 text-center sm:text-left">

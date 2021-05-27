@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Core\Model;
 use App\Models\User;
 use App\Models\Step;
+use App\Models\Ingredient;
 
 final class Recipe extends Model
 {
@@ -39,11 +40,23 @@ final class Recipe extends Model
                 return new Step();
             }
         );
-        
+    }
 
+    public function ingredients() : array
+    {
+        return $this->relationMany(
+            "ingredientsRelation",
+            "ingredients",
+            "id",
+            "recipe_id",
+            function () {
+                return new Ingredient();
+            }
+        );
     }
 
 
     protected ?User $authorRelation = null;
     protected ?array $stepsRelation = null;
+    protected ?array $ingredientsRelation = null;
 }

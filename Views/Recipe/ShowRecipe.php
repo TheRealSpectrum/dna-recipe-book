@@ -15,6 +15,7 @@ use App\Core\View;
       "cookingTime" => $recipe->cooking_time,
       "numServings" => $recipe->num_servings,
       "steps" => $recipe->steps(),
+      "ingredients" => $recipe->ingredients(),
     ])?>
   </div>
 </section>
