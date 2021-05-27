@@ -56,9 +56,13 @@ class RecipeController extends Controller
             "Main"
         );
     }
-    function edit()
+    function edit($id)
     {
-        return View::view("Recipe/EditRecipe", [], "Main");
+        return View::view("Recipe/EditRecipe", [
+            "recipe" => Recipe::query("SELECT * FROM `recipes` WHERE `id` = $id LIMIT 1")[0],
+            "authors" => User::query("SELECT * FROM `users`"),
+            "categories" => Category::query("SELECT * FROM `categories`"),
+        ], "Main");
     }
     function update()
     {
