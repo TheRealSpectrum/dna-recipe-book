@@ -6,11 +6,15 @@ namespace App\Controllers;
 use \App\Core\Controller;
 use \App\Core\View;
 
+use \App\Models\Category;
+
 class CategoryController extends Controller
 {
     function index()
     {
-        return View::view("Category/Index", [], "Main");
+        return View::view("Category/Index", [
+            "categories" => Category::query("SELECT * FROM `categories`"),
+        ], "Main");
     }
     function create()
     {
