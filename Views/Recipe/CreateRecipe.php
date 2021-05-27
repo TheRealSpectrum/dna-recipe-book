@@ -2,7 +2,7 @@
 
 <!-- Content -->
 <section class="flex-grow text-gray-400 body-font bg-gray-900">
-  <form class="mx-auto w-full max-w-lg my-4" method="POST">
+  <form class="mx-auto w-full max-w-lg my-4" method="POST" action="/recipes">
     <div class="flex flex-wrap -mx-3 mb-6">
       <div class="w-full md:w-100 px-3 mb-6 md:mb-0">
         <label class="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2" for="recipe_title">
@@ -22,7 +22,7 @@
           Author
         </label>
         <select class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 mb-3 leading-tight text-sm focus:outline-none focus:bg-white" name="recipe_author" type="text">
-          <?php foreach($authors as $author) {
+          <?php foreach ($authors as $author) {
             echo '<option value="' . $author->id . '">' . $author->name . '</option>';
           };
           ?>
@@ -39,9 +39,10 @@
           Categories
         </label>
         <select class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 mb-3 leading-tight text-sm focus:outline-none focus:bg-white" name="recipe_categories" multiple>
-          <option value="placeholder1">placeholder1</option>
-          <option value="placeholder2">placeholder2</option>
-          <option value="placeholder3">placeholder3</option>
+          <?php foreach ($categories as $category) {
+            echo '<option value="' . $category->id . '">' . $category->title . '</option>';
+          };
+          ?>
         </select>
       </div>
       <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -83,7 +84,6 @@
           Create Recipe
         </button>
       </div>
-
     </div>
   </form>
 </section>

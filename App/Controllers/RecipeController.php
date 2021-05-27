@@ -28,14 +28,15 @@ class RecipeController extends Controller
         return View::view("Recipe/CreateRecipe", [
             "authors" => User::query("SELECT * FROM `users`"),
             "categories" => Category::query("SELECT * FROM `categories`"),
-        ], "Main");
+        ], 
+        "Main");
     }
     function store(Request $request)
     {
         $newRecipe = Recipe::create([
             "title" => $request->getParameter("recipe_title"),
             "description" => $request->getParameter("recipe_description"),
-            "numServings" => $request->getParameter("recipe_servings"),
+            "num_servings" => $request->getParameter("recipe_servings"),
             "categories" => $request->getParameter("recipe_categories"),
             "preparationTime" => $request->getParameter("recipe_servings"),
             "cookingTime" => $request->getParameter("recipe_cooking_time"),
