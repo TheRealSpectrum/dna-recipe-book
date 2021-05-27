@@ -16,6 +16,16 @@ final class Recipe extends Model
     protected string $table = "recipes";
 
 
+    public function listCategoryAsLinks(): string
+    {
+        $results = [];
+        foreach ($this->categories() as $category) {
+            array_push($results, "<a href=\"/categories/{$category->id}\">{$category->title}</a>");
+        }
+
+        return implode(" - ", $results);
+    }
+
     // Relation functions
     public function author(): User
     {
@@ -30,7 +40,7 @@ final class Recipe extends Model
         );
     }
 
-    public function steps() : array
+    public function steps(): array
     {
         return $this->relationMany(
             "stepsRelation",
@@ -43,7 +53,7 @@ final class Recipe extends Model
         );
     }
 
-    public function ingredients() : array
+    public function ingredients(): array
     {
         return $this->relationMany(
             "ingredientsRelation",
