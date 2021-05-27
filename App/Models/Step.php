@@ -1,8 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
+namespace App\Models;
+
 use App\Core\Model;
 
-final class Ingredient extends Model 
+final class Step extends Model 
 {
     protected array $columns = ["id", "title", "description", "index", "recipe_id"]; 
     protected string $table = "steps";
@@ -12,7 +16,7 @@ final class Ingredient extends Model
     // Relation functions
 
 
-    protected ?Recipe $referencedRelation = null;
-    protected ?Recipe $oneRelation = null;
-    protected ?array $manyRelation = null;
+    protected ?Step $referencedRelation = null;
+    protected ?Step $oneRelation = null;
+    protected ?Step $manyRelation = null;
 }

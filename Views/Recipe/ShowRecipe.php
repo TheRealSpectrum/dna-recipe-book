@@ -9,6 +9,12 @@ use App\Core\View;
   <div class="container px-5 py-24 mx-auto flex flex-col">
     <?= View::component("Recipe/ShowRow", [
       "title" => $recipe->title,
+      "description" => $recipe->description,
+      "author" => $recipe->author(),
+      "preparationTime" => $recipe->preparation_time,
+      "cookingTime" => $recipe->cooking_time,
+      "numServings" => $recipe->num_servings,
+      "steps" => $recipe->steps(),
     ])?>
   </div>
 </section>

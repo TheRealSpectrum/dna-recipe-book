@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Core\Model;
 use App\Models\User;
+use App\Models\Step;
 
 final class Recipe extends Model
 {
@@ -27,6 +28,22 @@ final class Recipe extends Model
         );
     }
 
+    public function steps() : array
+    {
+        return $this->relationMany(
+            "stepsRelation",
+            "steps",
+            "id",
+            "recipe_id",
+            function () {
+                return new Step();
+            }
+        );
+        
+
+    }
+
 
     protected ?User $authorRelation = null;
+    protected ?array $stepsRelation = null;
 }
