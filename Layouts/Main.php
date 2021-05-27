@@ -36,7 +36,7 @@
             </div>
         </header>
 
-        <?= $yield() ?>;
+        <?= $yield() ?>
 
         <footer class="text-gray-400 bg-gray-800 body-font">
             <div class="container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
