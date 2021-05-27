@@ -7,6 +7,9 @@ use \App\Core\View;
 ?>
 
 <section class="text-gray-400 body-font bg-gray-900">
+    <a href="/users">
+        <p class="container px-5 pt-5 text-xl mx-auto">Back to users without saving</p>
+    </a>
     <div class="container px-5 py-24 mx-auto">
         <form class="flex w-full mb-20 flex-col gap-3" method="POST" action="/users">
             <input type="hidden" name="isAdmin" value="0">
