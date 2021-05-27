@@ -6,7 +6,7 @@ use \App\Core\View;
 ?>
 
 <!-- Content -->
-<section class="text-gray-400 body-font bg-gray-900">
+<section class="text-gray-400 body-font bg-gray-900 min-h-full">
     <a href="/categories/create">
         <p class="container px-5 pt-5 text-xl mx-auto">Create new category</p>
     </a>
