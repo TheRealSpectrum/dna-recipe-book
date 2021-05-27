@@ -7,6 +7,9 @@ use \App\Core\View;
 
 <!-- Content -->
 <section class="text-gray-400 body-font bg-gray-900">
+    <a href="/users/create">
+        <p class="container px-5 pt-5 text-xl mx-auto">Create new user</p>
+    </a>
     <div class="container px-5 py-24 mx-auto">
         <div class="flex flex-wrap w-full mb-20 flex-col gap-3">
             <!-- User -->
