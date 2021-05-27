@@ -16,11 +16,8 @@ use App\Core\View;
         "description" => $recipe->description,
         "author" => $recipe->author(),
       ]);
-
       }
-
       ?>
-        
     </div>
   </div>
 </section>
