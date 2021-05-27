@@ -8,6 +8,7 @@ use App\Core\Model;
 use App\Models\User;
 use App\Models\Step;
 use App\Models\Ingredient;
+use App\Models\Category;
 
 final class Recipe extends Model
 {
@@ -60,8 +61,25 @@ final class Recipe extends Model
         );
     }
 
+    public function categories(): array
+    {
+        return $this->relationIntersect(
+            "categoriesRelation",
+            "recipe_categories",
+            "categories",
+            "id",
+            "recipe_id",
+            "id",
+            "category_id",
+            function () {
+                return new Category();
+            }
+        );
+    }
+
 
     protected ?User $authorRelation = null;
     protected ?array $stepsRelation = null;
     protected ?array $ingredientsRelation = null;
+    protected ?array $categoriesRelation = null;
 }
