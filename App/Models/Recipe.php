@@ -15,6 +15,11 @@ final class Recipe extends Model
     protected string $table = "recipes";
 
 
+    public function listCategoryAsLinks(): string
+    {
+        return "categories here";
+    }
+
     // Relation functions
     public function author(): User
     {
@@ -29,7 +34,7 @@ final class Recipe extends Model
         );
     }
 
-    public function steps() : array
+    public function steps(): array
     {
         return $this->relationMany(
             "stepsRelation",
@@ -42,7 +47,7 @@ final class Recipe extends Model
         );
     }
 
-    public function ingredients() : array
+    public function ingredients(): array
     {
         return $this->relationMany(
             "ingredientsRelation",
