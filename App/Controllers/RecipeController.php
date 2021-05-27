@@ -58,10 +58,15 @@ class RecipeController extends Controller
     }
     function edit($id)
     {
+        $recipe = Recipe::query("SELECT * FROM `recipes` WHERE `id` = $id LIMIT 1")[0];
+        $recipe_categories = array_map(function($category) {
+            return $category->id;
+        }, $recipe->categories());
         return View::view("Recipe/EditRecipe", [
-            "recipe" => Recipe::query("SELECT * FROM `recipes` WHERE `id` = $id LIMIT 1")[0],
+            "recipe" => $recipe,
             "authors" => User::query("SELECT * FROM `users`"),
             "categories" => Category::query("SELECT * FROM `categories`"),
+            "recipe_categories" => $recipe_categories,
         ], "Main");
     }
     function update()

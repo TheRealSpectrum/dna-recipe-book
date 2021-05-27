@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use \App\Core\View;
-
 ?>
 
 <!-- Parts of code are copyrighted 2020 Mert Cukuren. Code released under the MIT license. See ThirdParty/Licenses/Tailblocks -->
@@ -31,7 +29,7 @@ use \App\Core\View;
         </label>
         <select class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 mb-3 leading-tight text-sm focus:outline-none focus:bg-white" name="recipe_author" type="text">
           <?php foreach ($authors as $author) {
-            echo '<option value="' . $author->id . '">' . $author->name . '</option>';
+            echo '<option value="' . $author->id . "\" " . ($author->id === $recipe->author_id ? "selected" : "") .  '>' . $author->name . '</option>';
           };
           ?>
         </select>
@@ -48,7 +46,7 @@ use \App\Core\View;
         </label>
         <select class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 mb-3 leading-tight text-sm focus:outline-none focus:bg-white" name="recipe_categories" multiple>
           <?php foreach ($categories as $category) {
-            echo '<option value="' . $category->id . '">' . $category->title . '</option>';
+            echo '<option value="' . $category->id . '" ' .  (in_array($category->id, $recipe_categories) ? "selected" : "") .  '>' . $category->title . '</option>';
           };
           ?>
         </select>
