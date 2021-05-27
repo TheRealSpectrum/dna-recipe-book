@@ -1,7 +1,7 @@
 <!-- Parts of code are copyrighted 2020 Mert Cukuren. Code released under the MIT license. See ThirdParty/Licenses/Tailblocks -->
 <div class="p-4 lg:w-1/3">
     <div class="h-full bg-gray-800 bg-opacity-40 px-8 pt-16 pb-24 rounded-lg overflow-hidden text-center relative" >
-        <h2 class="tracking-widest text-xs title-font font-medium text-gray-500 mb-1">CATEGORY</h2>
+        <h2 class="tracking-widest text-xs title-font font-medium text-gray-500 mb-1"><?= $author ?></h2>
         <h1 class="title-font sm:text-2xl text-xl font-medium text-white mb-3"><?= $title ?></h1>
         <p class="leading-relaxed mb-3"><?= $description ?></p>
         <a class="text-indigo-400 inline-flex items-center" href="recipes/<?= $id ?>">Read more

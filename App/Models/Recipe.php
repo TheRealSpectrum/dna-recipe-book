@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Core\Model;
@@ -11,9 +13,22 @@ final class Recipe extends Model
 
 
     // Relation functions
+    public function author() : User
+    {
+        return $this->relationOne(
+            "authorRelation",
+            "users",
+            "author_id",
+            "id",
+            function ()
+            {
+                return new User();
+            }
+        );
+    }
 
 
     protected ?Recipe $referencedRelation = null;
-    protected ?Recipe $oneRelation = null;
+    protected ?Recipe $authorRelation = null;
     protected ?array $manyRelation = null;
 }
