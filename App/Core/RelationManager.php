@@ -183,6 +183,10 @@ final class RelationManager
             array_push($keys, $intersectResult[$otherKey]);
         }
 
+        if (count($keys) === 0) {
+            return [];
+        }
+
         $keyList = implode(", ", $keys);
 
         $query = "SELECT * FROM `$referencedTable` WHERE `$otherId` in ($keyList)";
