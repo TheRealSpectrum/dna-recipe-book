@@ -10,6 +10,7 @@ use \App\Core\View;
 use \App\Models\Recipe;
 use \App\Models\User;
 use \App\Models\Category;
+use App\Models\Ingredient;
 
 class RecipeController extends Controller
 {
@@ -67,6 +68,7 @@ class RecipeController extends Controller
             "authors" => User::query("SELECT * FROM `users`"),
             "categories" => Category::query("SELECT * FROM `categories`"),
             "recipe_categories" => $recipe_categories,
+            "ingredients" => Ingredient::query("SELECT * FROM `ingredients` WHERE `recipe_id` = $id"),
         ], "Main");
     }
     function update(Request $request, $id)
