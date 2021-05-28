@@ -113,14 +113,18 @@ declare(strict_types=1);
       </div>
     </div>
     <div class="flex flex-wrap -mx-3 mb-2">
-      <div class="w-full md:w-1/2 px-3 md:mb-0">
-        <label class="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2" for="ingredient_title">Ingredient name</label>
-        <input class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2  leading-tight text-sm focus:outline-none focus:bg-white" type="text" name="ingredient_title">
-      </div>
-      <div class="w-full md:w-1/2 px-3 mb-2 md:mb-0">
-        <label class="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2" for="ingredient_title">Ingredient Quantity</label>
-        <input class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2  leading-tight text-sm focus:outline-none focus:bg-white" type="text" name="ingredient_quantity">
-      </div>
+      <?php
+      foreach($ingredients as $ingredient) {
+        echo '<div class="w-full md:w-1/2 px-3 md:mb-0">'
+        . '<label class="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2" for="ingredient_title">Ingredient name</label>'
+        . '<input class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 leading-tight text-sm focus:outline-none focus:bg-white" type="text" name="ingredient_title" value="' . $ingredient->name . '" readonly>'
+        . '</div>'
+        . '<div class="w-full md:w-1/2 px-3 mb-2 md:mb-0">'
+        . '<label class="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2" for="ingredient_title">Ingredient Quantity</label>'
+        . '<input class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 leading-tight text-sm focus:outline-none focus:bg-white" type="text" name="ingredient_quantity" value="' . $ingredient->quantity . '" readonly>'
+        . '</div>';
+      }
+      ?>
     </div>
 
 
