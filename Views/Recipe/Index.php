@@ -6,7 +6,7 @@ use App\Core\View;
 ?>
 
 <!-- Content -->
-<section class="text-gray-400 bg-gray-900 body-font">
+<section class="text-gray-400 bg-gray-900 body-font min-h-full">
     <a href="/recipes/create">
         <p class="container px-5 pt-5 text-xl mx-auto">Create new recipe</p>
     </a>
