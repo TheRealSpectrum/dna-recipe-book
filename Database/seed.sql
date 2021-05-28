@@ -105,6 +105,21 @@ INSERT INTO `categories` (`title`, `description`)
 INSERT INTO `categories` (`title`, `description`)
     VALUES ('Oven', 'Do not forget to preheat your oven!');
 
+INSERT INTO `categories` (`title`, `description`)
+    VALUES ('Quick', 'Not enough time? no need to worry!');
+
+INSERT INTO `categories` (`title`, `description`)
+    VALUES ('Cheese', 'Say cheese!');
+
+INSERT INTO `categories` (`title`, `description`)
+    VALUES ('Pasta', 'Always a good idea!');
+
+INSERT INTO `categories` (`title`, `description`)
+    VALUES ('Vegetarian', 'No meat');
+
+INSERT INTO `categories` (`title`, `description`)
+    VALUES ('Desert', 'Just deserts!');
+
 -- Ingredients
 -- Recipe 1 (Pasta Pesto)
 INSERT INTO `ingredients` (`recipe_id`, `name`, `quantity`)
@@ -667,7 +682,61 @@ INSERT INTO `recipe_categories` (`recipe_id`, `category_id`)
     values (2, 1);
 
 INSERT INTO `recipe_categories` (`recipe_id`, `category_id`)
+    values (8, 1);
+
+INSERT INTO `recipe_categories` (`recipe_id`, `category_id`)
     values (1, 2);
 
 INSERT INTO `recipe_categories` (`recipe_id`, `category_id`)
+    values (4, 2);
+
+INSERT INTO `recipe_categories` (`recipe_id`, `category_id`)
     values (2, 3);
+
+INSERT INTO `recipe_categories` (`recipe_id`, `category_id`)
+    values (7, 3);
+
+INSERT INTO `recipe_categories` (`recipe_id`, `category_id`)
+    values (8, 3);
+
+INSERT INTO `recipe_categories` (`recipe_id`, `category_id`)
+    values (1, 4);
+
+INSERT INTO `recipe_categories` (`recipe_id`, `category_id`)
+    values (5, 4);
+
+INSERT INTO `recipe_categories` (`recipe_id`, `category_id`)
+    values (6, 4);
+
+INSERT INTO `recipe_categories` (`recipe_id`, `category_id`)
+    values (3, 5);
+
+INSERT INTO `recipe_categories` (`recipe_id`, `category_id`)
+    values (8, 5);
+
+INSERT INTO `recipe_categories` (`recipe_id`, `category_id`)
+    values (1, 6);
+
+INSERT INTO `recipe_categories` (`recipe_id`, `category_id`)
+    values (2, 6);
+
+INSERT INTO `recipe_categories` (`recipe_id`, `category_id`)
+    values (8, 6);
+
+INSERT INTO `recipe_categories` (`recipe_id`, `category_id`)
+    values (1, 7);
+
+INSERT INTO `recipe_categories` (`recipe_id`, `category_id`)
+    values (3, 7);
+
+INSERT INTO `recipe_categories` (`recipe_id`, `category_id`)
+    values (5, 7);
+
+INSERT INTO `recipe_categories` (`recipe_id`, `category_id`)
+    values (6, 7);
+
+INSERT INTO `recipe_categories` (`recipe_id`, `category_id`)
+    values (8, 7);
+
+INSERT INTO `recipe_categories` (`recipe_id`, `category_id`)
+    values (5, 8);
