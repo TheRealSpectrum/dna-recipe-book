@@ -21,13 +21,14 @@ class IngredientController extends Controller {
         ]);
 
         $newIngredient->store();
-
         return new RedirectResponse("/recipes/$recipe_id/edit/");
-
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
+        $recipe_id = $request->getParameter("recipe_id");
         Ingredient::query("DELETE FROM `ingredients` WHERE id = $id");
+
+        return new RedirectResponse("/recipes/$recipe_id/edit");
     }
 }
