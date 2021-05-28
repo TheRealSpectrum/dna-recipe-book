@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Core\View;
+
 ?>
 
 <!-- Parts of code are copyrighted 2020 Mert Cukuren. Code released under the MIT license. See ThirdParty/Licenses/Tailblocks -->
@@ -112,24 +114,16 @@ declare(strict_types=1);
         </button>
       </div>
     </div>
-    </form>
+  </form>
+  <div class="mx-auto w-full max-w-2xl my-4">
     <div class="flex flex-wrap -mx-3 mb-2">
       <?php
-      foreach($ingredients as $ingredient) {
-        echo '<div class="w-full md:w-1/2 px-3 md:mb-0">'
-        . '<label class="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2" for="ingredient_title">Ingredient name</label>'
-        . '<input class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 leading-tight text-sm focus:outline-none focus:bg-white" type="text"  value="' . $ingredient->name . '" readonly>'
-        . '</div>'
-        . '<div class="w-full md:w-1/2 px-3 mb-2 md:mb-0">'
-        . '<label class="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2" for="ingredient_title">Ingredient Quantity</label>'
-        . '<input class="block w-full bg-gray-200 text-gray-700 border rounded py-2 px-2 leading-tight text-sm focus:outline-none focus:bg-white" type="text"  value="' . $ingredient->quantity . '" readonly>'
-        . '<form action="/ingredients/' . $ingredient->id . '" method="post">'
-        . '<input type="hidden" name="_method" value="DELETE">'
-        . '<input type="text" name="recipe_id" value="' . $ingredient->recipe_id . '" hidden>'
-        . '<button type="submit" class="bg-red-700 p-1 m-1 rounded-lg text-gray-100">Delete</button>'
-        . '</form>'
-        . '</div>';
+      foreach ($ingredients as $ingredient) {
+        echo View::component("Ingredient/IndexRow", [
+          "ingredient" => $ingredient
+        ]);
       }
       ?>
     </div>
+  </div>
 </section>
