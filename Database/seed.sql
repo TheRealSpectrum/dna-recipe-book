@@ -3,7 +3,7 @@
 
 -- Users
 INSERT INTO `users` (`name`, `password`, `isAdmin`)
-    VALUES ('Damy', '$2y$10$tIU6zMikquirHx7GBWwnNeCyAkEIN0VD8nl8P8E5Gt6etVCE26HES', 1);
+    VALUES ('Damu', '$2y$10$tIU6zMikquirHx7GBWwnNeCyAkEIN0VD8nl8P8E5Gt6etVCE26HES', 1);
 
 INSERT INTO `users` (`name`, `password`, `isAdmin`)
     VALUES ('Niels', '$2y$10$0FzpmmdYmhsDpUWiRxEdIeBdG8K7.z6G2kac8TJ1z/AR2Q5dnwVS6', 1);
