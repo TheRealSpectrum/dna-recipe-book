@@ -14,6 +14,9 @@ INSERT INTO `users` (`name`, `password`)
 INSERT INTO `users` (`name`, `password`)
     VALUES ('Rik', '$2y$10$q9QltzjN4NnnVNgPE5Mjc.bfs/G6F/uVuLL.O2xyTV9Vtx8j2gt8i');
 
+INSERT INTO `users` (`name`, `password`)
+    VALUES ('Testuser', '$2y$10$q9QltzjN4NnnVNgPE5Mjc.bfs/G6F/uVuLL.O2xyTV9Vtx8j2gt8i');
+
 -- Recipes
 INSERT INTO `recipes` (`author_id`, `title`, `description`, `preparation_time`, `cooking_time`, `num_servings`)
     VALUES (
