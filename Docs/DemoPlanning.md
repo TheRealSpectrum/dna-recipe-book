@@ -85,7 +85,7 @@
 - `Routes.php`
   - GET
   - RESOURCE 
-- `UserController.php`
+- `UserController.php (Open right split)`
   - index
   - update
 - `User` model
